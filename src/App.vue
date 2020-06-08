@@ -1,29 +1,53 @@
 <template>
   <div id="app">
     <px-header />
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Category</th>
-          <th scope="col">Notes</th>
-          <th scope="col">Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        <px-expense
-          v-for="expense in expenses"
-          :key="expense.id"
-          :expense="expense"
-        />
-      </tbody>
-    </table>
+    <div class="container">
+      <div class="row pt-5">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Category</th>
+              <th scope="col">Notes</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <px-expense
+              v-for="expense in expenses"
+              :key="expense.id"
+              :expense="expense"
+            />
+          </tbody>
+        </table>
+      </div>
+      <div class="row pt-3">
+        <div class=" offset-sm-3 col-sm-3 pb-2">
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-toggle="modal"
+            data-target="#addExpenseModal"
+          >
+            Agregar gasto -
+          </button>
+        </div>
+        <div class="col-sm-3">
+          <button type="button" class="btn btn-success">
+            Agregar ingreso +
+          </button>
+        </div>
+      </div>
+    </div>
+    <px-add-expense-modal />
   </div>
 </template>
 
 <script>
 import PxHeader from "@/components/PxHeader";
 import PxExpense from "@/components/PxExpense";
+import PxAddExpenseModal from "@/components/PxAddExpenseModal";
+
 import api from "@/api.js";
 
 export default {
@@ -31,6 +55,7 @@ export default {
   components: {
     PxHeader,
     PxExpense,
+    PxAddExpenseModal,
   },
   data() {
     return {

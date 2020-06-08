@@ -9,13 +9,27 @@ const getExpenses = async () => {
     index: index + 1,
     id: result._id,
     amount: result.amount,
-    categoryId: result.category.categoryId,
-    categoryName: result.category.name,
+    categoryId: result.category ? result.category.categoryId : "",
+    categoryName: result.category ? result.category.name : "",
     notes: result.notes,
   }));
   return expenses;
 };
 
+const addExpense = async (expense) => {
+  const res = await fetch(`${apiUrl}/expenses`, {
+    method: "POST",
+    body: JSON.stringify(expense),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  return data.message;
+};
+
 export default {
   getExpenses,
+  addExpense,
 };
