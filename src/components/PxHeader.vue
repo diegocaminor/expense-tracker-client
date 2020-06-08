@@ -20,7 +20,9 @@
 <script>
 export default {
   name: "PxHeader",
-  data() {},
+  data() {
+    return {};
+  },
   methods: {},
 };
 </script>

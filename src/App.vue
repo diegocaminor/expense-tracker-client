@@ -1,17 +1,36 @@
 <template>
   <div id="app">
     <px-header />
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Category</th>
+          <th scope="col">Notes</th>
+          <th scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <px-expense
+          v-for="expense in expenses"
+          :key="expense.id"
+          :expense="expense"
+        />
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
 import PxHeader from "@/components/PxHeader";
+import PxExpense from "@/components/PxExpense";
 import api from "@/api.js";
 
 export default {
   name: "App",
   components: {
     PxHeader,
+    PxExpense,
   },
   data() {
     return {
