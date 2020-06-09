@@ -137,6 +137,7 @@ export default {
         alert(this.requestMessage);
         this.expense = new Expense();
         document.getElementById("closeExpenseModal").click();
+        this.$emit("reload");
       }
     },
   },

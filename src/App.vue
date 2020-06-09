@@ -11,6 +11,7 @@
               <th scope="col">Notes</th>
               <th scope="col">Amount</th>
               <th scope="col">Date</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -18,6 +19,7 @@
               v-for="expense in expenses"
               :key="expense.id"
               :expense="expense"
+              v-on:reload="getExpenses"
             />
           </tbody>
         </table>
@@ -25,6 +27,7 @@
       <div class="row pt-3 pb-5">
         <div class="offset-sm-3 col-sm-3 pb-2">
           <button
+            id="addExpenseButton"
             type="button"
             class="btn btn-danger"
             data-toggle="modal"
@@ -35,6 +38,7 @@
         </div>
         <div class="col-sm-3">
           <button
+            id="addIncomeButton"
             type="button"
             class="btn btn-success"
             data-toggle="modal"
@@ -45,7 +49,7 @@
         </div>
       </div>
     </div>
-    <px-add-expense-modal />
+    <px-add-expense-modal v-on:reload="getExpenses" />
     <px-add-income-modal />
   </div>
 </template>
@@ -75,7 +79,11 @@ export default {
     console.log("created!()");
     api.getExpenses().then((expenses) => (this.expenses = expenses));
   },
-  methods: {},
+  methods: {
+    getExpenses() {
+      api.getExpenses().then((expenses) => (this.expenses = expenses));
+    },
+  },
 };
 </script>
 

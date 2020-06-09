@@ -31,6 +31,17 @@ const addExpense = async (expense) => {
   return data.message;
 };
 
+// DELETE delete expense by id
+const deleteExpense = async (expenseId) => {
+  const res = await fetch(`${apiUrl}/expenses/${expenseId}`, {
+    method: "DELETE",
+  });
+  const data = await res.json();
+  console.log("deleteExpense");
+  console.log(data);
+  return data.message;
+};
+
 // POST create income
 const addIncome = async (income) => {
   const res = await fetch(`${apiUrl}/incomes`, {
@@ -48,5 +59,6 @@ const addIncome = async (income) => {
 export default {
   getExpenses,
   addExpense,
+  deleteExpense,
   addIncome,
 };
