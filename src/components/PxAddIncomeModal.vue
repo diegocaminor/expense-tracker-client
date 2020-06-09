@@ -2,16 +2,16 @@
   <!-- Modal -->
   <div
     class="modal fade"
-    id="addExpenseModal"
+    id="addIncomeModal"
     tabindex="-1"
     role="dialog"
-    aria-labelledby="addExpenseModalLabel"
+    aria-labelledby="addIncomeModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addExpenseModalLabel">New expense</h5>
+          <h5 class="modal-title" id="addIncomeModalLabel">New income</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -28,13 +28,13 @@
             <div class="form-group">
               <input
                 type="number"
-                v-model="expense.amount"
+                v-model="income.amount"
                 placeholder="Amount"
                 class="form-control"
               />
             </div>
             <div class="form-group dropdown">
-              <select v-model="expense.category" class="form-control">
+              <select v-model="income.category" class="form-control">
                 <option disabled selected="selected" value>Category</option>
                 <option
                   v-for="category in categories"
@@ -46,7 +46,7 @@
             <div class="form-group">
               <textarea
                 type="text"
-                v-model="expense.notes"
+                v-model="income.notes"
                 placeholder="Notes"
                 class="form-control"
                 cols="20"
@@ -57,12 +57,12 @@
         </div>
         <div class="modal-footer">
           <button
-            id="closeExpenseModal"
+            id="closeIncomeModal"
             type="button"
             class="btn btn-secondary"
             data-dismiss="modal"
           >Close</button>
-          <button @click="addExpense" type="button" class="btn btn-primary">Save changes</button>
+          <button @click="addIncome" type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@
 <script>
 import api from "@/api.js";
 
-class Expense {
+class Income {
   constructor(userId, amount, categoryId, categoryName, notes) {
     this.userId = userId || "5ed9f0c97745d7515f0910b0";
     this.amount = amount || 0;
@@ -82,23 +82,23 @@ class Expense {
 }
 
 export default {
-  name: "PxAddExpenseModal",
+  name: "PxAddIncomeModal",
 
   data() {
     return {
-      expense: new Expense(),
+      income: new Income(),
       categories: [
         {
           categoryId: "5ed878eb1863db2e8822633b",
-          name: "Home"
+          name: "Salary"
         },
         {
           categoryId: "5ed878eb1863db2e88f26332",
-          name: "Pets"
+          name: "Deposits"
         },
         {
           categoryId: "5ed878eb1863db2e88f26334",
-          name: "House"
+          name: "Savings"
         }
       ],
       requestMessage: "",
@@ -106,22 +106,22 @@ export default {
     };
   },
   methods: {
-    async addExpense() {
+    async addIncome() {
       this.errors = [];
-      if (!this.expense.amount || this.expense.amount == 0) {
+      if (!this.income.amount || this.income.amount == 0) {
         this.errors.push("Amount required");
       }
-      if (!this.expense.category) {
+      if (!this.income.category) {
         this.errors.push("Category required");
       }
-      if (!this.expense.notes) {
+      if (!this.income.notes) {
         this.errors.push("Notes required");
       }
       if (!this.errors.length) {
-        this.requestMessage = await api.addExpense(this.expense);
+        this.requestMessage = await api.addIncome(this.income);
         alert(this.requestMessage);
-        this.expense = new Expense();
-        document.getElementById("closeExpenseModal").click();
+        this.income = new Income();
+        document.getElementById("closeIncomeModal").click();
       }
     }
   }

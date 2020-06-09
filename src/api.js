@@ -16,6 +16,7 @@ const getExpenses = async () => {
   return expenses;
 };
 
+// POST create expense
 const addExpense = async (expense) => {
   const res = await fetch(`${apiUrl}/expenses`, {
     method: "POST",
@@ -29,7 +30,22 @@ const addExpense = async (expense) => {
   return data.message;
 };
 
+// POST create income
+const addIncome = async (income) => {
+  const res = await fetch(`${apiUrl}/incomes`, {
+    method: "POST",
+    body: JSON.stringify(income),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  return data.message;
+};
+
 export default {
   getExpenses,
   addExpense,
+  addIncome,
 };

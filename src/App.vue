@@ -13,33 +13,31 @@
             </tr>
           </thead>
           <tbody>
-            <px-expense
-              v-for="expense in expenses"
-              :key="expense.id"
-              :expense="expense"
-            />
+            <px-expense v-for="expense in expenses" :key="expense.id" :expense="expense" />
           </tbody>
         </table>
       </div>
-      <div class="row pt-3">
-        <div class=" offset-sm-3 col-sm-3 pb-2">
+      <div class="row pt-3 pb-5">
+        <div class="offset-sm-3 col-sm-3 pb-2">
           <button
             type="button"
             class="btn btn-danger"
             data-toggle="modal"
             data-target="#addExpenseModal"
-          >
-            Agregar gasto -
-          </button>
+          >Add expense -</button>
         </div>
         <div class="col-sm-3">
-          <button type="button" class="btn btn-success">
-            Agregar ingreso +
-          </button>
+          <button
+            type="button"
+            class="btn btn-success"
+            data-toggle="modal"
+            data-target="#addIncomeModal"
+          >Add income +</button>
         </div>
       </div>
     </div>
     <px-add-expense-modal />
+    <px-add-income-modal />
   </div>
 </template>
 
@@ -47,6 +45,7 @@
 import PxHeader from "@/components/PxHeader";
 import PxExpense from "@/components/PxExpense";
 import PxAddExpenseModal from "@/components/PxAddExpenseModal";
+import PxAddIncomeModal from "@/components/PxAddIncomeModal";
 
 import api from "@/api.js";
 
@@ -56,17 +55,18 @@ export default {
     PxHeader,
     PxExpense,
     PxAddExpenseModal,
+    PxAddIncomeModal
   },
   data() {
     return {
-      expenses: [],
+      expenses: []
     };
   },
   created() {
     console.log("created!()");
-    api.getExpenses().then((expenses) => (this.expenses = expenses));
+    api.getExpenses().then(expenses => (this.expenses = expenses));
   },
-  methods: {},
+  methods: {}
 };
 </script>
 
