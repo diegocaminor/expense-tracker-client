@@ -19,7 +19,7 @@
               v-for="expense in expenses"
               :key="expense.id"
               :expense="expense"
-              v-on:reload="getExpenses"
+              v-on:actions-event="actionsEvent"
             />
           </tbody>
         </table>
@@ -32,6 +32,7 @@
             class="btn btn-danger"
             data-toggle="modal"
             data-target="#addExpenseModal"
+            @click="reinitializeModel"
           >
             Add expense -
           </button>
@@ -49,7 +50,7 @@
         </div>
       </div>
     </div>
-    <px-add-expense-modal v-on:reload="getExpenses" />
+    <px-add-expense-modal v-on:actions-event="actionsEvent" :expense="model" />
     <px-add-income-modal />
   </div>
 </template>
@@ -62,6 +63,16 @@ import PxAddIncomeModal from "@/components/PxAddIncomeModal";
 
 import api from "@/api.js";
 
+class Model {
+  constructor() {
+    this.id = "";
+    this.userId = "5ed9f0c97745d7515f0910b0";
+    this.amount = 0;
+    this.category = "";
+    this.notes = "";
+  }
+}
+
 export default {
   name: "App",
   components: {
@@ -72,16 +83,31 @@ export default {
   },
   data() {
     return {
+      expense: {},
       expenses: [],
+      model: new Model(),
+      updateModel: false,
     };
   },
   created() {
-    console.log("created!()");
     api.getExpenses().then((expenses) => (this.expenses = expenses));
   },
   methods: {
-    getExpenses() {
-      api.getExpenses().then((expenses) => (this.expenses = expenses));
+    actionsEvent(payload) {
+      if (payload.action == "reload") {
+        api.getExpenses().then((expenses) => (this.expenses = expenses));
+      } else if (payload.action == "edit-expense") {
+        console.log(payload);
+        this.model = payload.data;
+        this.updateModel = true;
+        document.getElementById("addExpenseButton").click();
+        this.updateModel = false;
+      }
+    },
+    reinitializeModel() {
+      if (!this.updateModel) {
+        this.model = new Model();
+      }
     },
   },
 };

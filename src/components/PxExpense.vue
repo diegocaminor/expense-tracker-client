@@ -1,12 +1,16 @@
 <template>
   <tr>
     <th scope="row">{{ expense.index }}</th>
-    <td>{{ expense.categoryName | capitalizeFirstLetter }}</td>
+    <td>{{ expense.category.name | capitalizeFirstLetter }}</td>
     <td>{{ expense.notes }}</td>
     <td>{{ expense.amount | dollar }}</td>
     <td>{{ expense.date | moment }}</td>
     <td>
-      <font-awesome-icon class="faIcon mr-2" icon="edit" />
+      <font-awesome-icon
+        class="faIcon mr-2"
+        icon="edit"
+        v-on:click="editExpense(expense)"
+      />
       <font-awesome-icon
         class="faIcon "
         icon="trash"
@@ -36,7 +40,16 @@ export default {
     async deleteExpense(expenseId) {
       this.requestMessage = await api.deleteExpense(expenseId);
       alert(this.requestMessage);
-      this.$emit("reload");
+      this.$emit("actions-event", {
+        action: "reload",
+        data: null,
+      });
+    },
+    editExpense(expense) {
+      this.$emit("actions-event", {
+        action: "edit-expense",
+        data: expense,
+      });
     },
   },
 };

@@ -2,6 +2,7 @@
   <!-- Modal -->
   <div
     class="modal fade"
+    ref="vuemodal"
     id="addExpenseModal"
     tabindex="-1"
     role="dialog"
@@ -75,8 +76,21 @@
           >
             Close
           </button>
-          <button @click="addExpense" type="button" class="btn btn-primary">
-            Save changes
+          <button
+            v-if="expense.id"
+            @click="addExpense"
+            type="button"
+            class="btn btn-primary"
+          >
+            Update
+          </button>
+          <button
+            v-else
+            @click="addExpense"
+            type="button"
+            class="btn btn-primary"
+          >
+            Save
           </button>
         </div>
       </div>
@@ -87,21 +101,10 @@
 <script>
 import api from "@/api.js";
 
-class Expense {
-  constructor(userId, amount, categoryId, categoryName, notes) {
-    this.userId = userId || "5ed9f0c97745d7515f0910b0";
-    this.amount = amount || 0;
-    this.category = categoryId || "";
-    this.notes = notes || "";
-  }
-}
-
 export default {
   name: "PxAddExpenseModal",
-
   data() {
     return {
-      expense: new Expense(),
       categories: [
         {
           categoryId: "5ed878eb1863db2e8822633b",
@@ -120,8 +123,15 @@ export default {
       errors: [],
     };
   },
+  props: {
+    expense: {
+      type: Object,
+      default: () => {},
+    },
+  },
   methods: {
     async addExpense() {
+      console.log(this.expense);
       this.errors = [];
       if (!this.expense.amount || this.expense.amount == 0) {
         this.errors.push("Amount required");
@@ -133,11 +143,17 @@ export default {
         this.errors.push("Notes required");
       }
       if (!this.errors.length) {
-        this.requestMessage = await api.addExpense(this.expense);
+        if (!this.expense.id) {
+          this.requestMessage = await api.addExpense(this.expense);
+        } else {
+          this.requestMessage = await api.updateExpense(this.expense);
+        }
         alert(this.requestMessage);
-        this.expense = new Expense();
         document.getElementById("closeExpenseModal").click();
-        this.$emit("reload");
+        this.$emit("actions-event", {
+          action: "reload",
+          data: null,
+        });
       }
     },
   },
