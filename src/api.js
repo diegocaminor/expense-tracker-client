@@ -12,6 +12,7 @@ const getExpenses = async () => {
     categoryId: result.category ? result.category.categoryId : "",
     categoryName: result.category ? result.category.name : "",
     notes: result.notes,
+    date: result.createdAt,
   }));
   return expenses;
 };

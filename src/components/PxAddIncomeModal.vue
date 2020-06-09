@@ -12,7 +12,12 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addIncomeModalLabel">New income</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -26,12 +31,17 @@
               </div>
             </div>
             <div class="form-group">
-              <input
-                type="number"
-                v-model="income.amount"
-                placeholder="Amount"
-                class="form-control"
-              />
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">$</span>
+                </div>
+                <input
+                  type="number"
+                  v-model="income.amount"
+                  placeholder="Amount"
+                  class="form-control"
+                />
+              </div>
             </div>
             <div class="form-group dropdown">
               <select v-model="income.category" class="form-control">
@@ -40,7 +50,8 @@
                   v-for="category in categories"
                   :key="category.id"
                   :value="category"
-                >{{ category.name }}</option>
+                  >{{ category.name }}</option
+                >
               </select>
             </div>
             <div class="form-group">
@@ -61,8 +72,12 @@
             type="button"
             class="btn btn-secondary"
             data-dismiss="modal"
-          >Close</button>
-          <button @click="addIncome" type="button" class="btn btn-primary">Save changes</button>
+          >
+            Close
+          </button>
+          <button @click="addIncome" type="button" class="btn btn-primary">
+            Save changes
+          </button>
         </div>
       </div>
     </div>
@@ -90,19 +105,19 @@ export default {
       categories: [
         {
           categoryId: "5ed878eb1863db2e8822633b",
-          name: "Salary"
+          name: "Salary",
         },
         {
           categoryId: "5ed878eb1863db2e88f26332",
-          name: "Deposits"
+          name: "Deposits",
         },
         {
           categoryId: "5ed878eb1863db2e88f26334",
-          name: "Savings"
-        }
+          name: "Savings",
+        },
       ],
       requestMessage: "",
-      errors: []
+      errors: [],
     };
   },
   methods: {
@@ -123,7 +138,7 @@ export default {
         this.income = new Income();
         document.getElementById("closeIncomeModal").click();
       }
-    }
-  }
+    },
+  },
 };
 </script>

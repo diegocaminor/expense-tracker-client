@@ -10,10 +10,15 @@
               <th scope="col">Category</th>
               <th scope="col">Notes</th>
               <th scope="col">Amount</th>
+              <th scope="col">Date</th>
             </tr>
           </thead>
           <tbody>
-            <px-expense v-for="expense in expenses" :key="expense.id" :expense="expense" />
+            <px-expense
+              v-for="expense in expenses"
+              :key="expense.id"
+              :expense="expense"
+            />
           </tbody>
         </table>
       </div>
@@ -24,7 +29,9 @@
             class="btn btn-danger"
             data-toggle="modal"
             data-target="#addExpenseModal"
-          >Add expense -</button>
+          >
+            Add expense -
+          </button>
         </div>
         <div class="col-sm-3">
           <button
@@ -32,7 +39,9 @@
             class="btn btn-success"
             data-toggle="modal"
             data-target="#addIncomeModal"
-          >Add income +</button>
+          >
+            Add income +
+          </button>
         </div>
       </div>
     </div>
@@ -55,18 +64,18 @@ export default {
     PxHeader,
     PxExpense,
     PxAddExpenseModal,
-    PxAddIncomeModal
+    PxAddIncomeModal,
   },
   data() {
     return {
-      expenses: []
+      expenses: [],
     };
   },
   created() {
     console.log("created!()");
-    api.getExpenses().then(expenses => (this.expenses = expenses));
+    api.getExpenses().then((expenses) => (this.expenses = expenses));
   },
-  methods: {}
+  methods: {},
 };
 </script>
 
