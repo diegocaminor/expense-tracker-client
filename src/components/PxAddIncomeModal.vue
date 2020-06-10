@@ -102,23 +102,13 @@ export default {
   data() {
     return {
       income: new Income(),
-      categories: [
-        {
-          categoryId: "5ed878eb1863db2e8822633b",
-          name: "Salary",
-        },
-        {
-          categoryId: "5ed878eb1863db2e88f26332",
-          name: "Deposits",
-        },
-        {
-          categoryId: "5ed878eb1863db2e88f26334",
-          name: "Savings",
-        },
-      ],
+      categories: [],
       requestMessage: "",
       errors: [],
     };
+  },
+  mounted() {
+    this.getCategories();
   },
   methods: {
     async addIncome() {
@@ -138,6 +128,11 @@ export default {
         this.income = new Income();
         document.getElementById("closeIncomeModal").click();
       }
+    },
+    getCategories() {
+      api
+        .getCategories("income")
+        .then((categories) => (this.categories = categories));
     },
   },
 };

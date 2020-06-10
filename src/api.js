@@ -71,10 +71,37 @@ const addIncome = async (income) => {
   return data.message;
 };
 
+// GET categories
+const getCategories = async (type) => {
+  const res = await fetch(`${apiUrl}/categories/${type}`);
+  const data = await res.json();
+  let categories = data.data.map((result) => ({
+    categoryId: result._id,
+    name: result.name,
+  }));
+  return categories;
+};
+
+// POST category
+const addCategory = async (category) => {
+  const res = await fetch(`${apiUrl}/categories`, {
+    method: "POST",
+    body: JSON.stringify(category),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  return data.message;
+};
+
 export default {
   getExpenses,
   addExpense,
   updateExpense,
   deleteExpense,
   addIncome,
+  getCategories,
+  addCategory,
 };

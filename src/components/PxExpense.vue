@@ -54,9 +54,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.faIcon {
-  cursor: pointer;
-}
-</style>

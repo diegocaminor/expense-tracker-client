@@ -44,8 +44,12 @@
                 />
               </div>
             </div>
-            <div class="form-group dropdown">
-              <select v-model="expense.category" class="form-control">
+            <div class="form-group dropdown d-flex">
+              <select
+                v-if="!isAddCategoryForm"
+                v-model="expense.category"
+                class="form-control col-sm-10"
+              >
                 <option disabled selected="selected" value>Category</option>
                 <option
                   v-for="category in categories"
@@ -54,6 +58,19 @@
                   >{{ category.name | capitalizeFirstLetter }}</option
                 >
               </select>
+              <px-add-category
+                @toggle-is-add-category-form="getCategories()"
+                :category="newCategory"
+                v-else
+              />
+              <div class="col-sm-2">
+                <font-awesome-icon
+                  v-if="!isAddCategoryForm"
+                  class="faIcon mt-2"
+                  icon="plus"
+                  @click="isAddCategoryForm = !isAddCategoryForm"
+                />
+              </div>
             </div>
             <div class="form-group">
               <textarea
@@ -100,27 +117,24 @@
 
 <script>
 import api from "@/api.js";
+import PxAddCategory from "@/components/PxAddCategory";
 
 export default {
   name: "PxAddExpenseModal",
+  components: {
+    PxAddCategory,
+  },
   data() {
     return {
-      categories: [
-        {
-          categoryId: "5ed878eb1863db2e8822633b",
-          name: "home",
-        },
-        {
-          categoryId: "5ed878eb1863db2e88f26332",
-          name: "pets",
-        },
-        {
-          categoryId: "5ed878eb1863db2e88f26334",
-          name: "house",
-        },
-      ],
+      newCategory: {
+        id: "",
+        name: "",
+        type: "expense",
+      },
+      categories: [],
       requestMessage: "",
       errors: [],
+      isAddCategoryForm: false,
     };
   },
   props: {
@@ -128,6 +142,9 @@ export default {
       type: Object,
       default: () => {},
     },
+  },
+  mounted() {
+    this.getCategories();
   },
   methods: {
     async addExpense() {
@@ -155,6 +172,12 @@ export default {
           data: null,
         });
       }
+    },
+    getCategories() {
+      this.isAddCategoryForm = false;
+      api
+        .getCategories("expense")
+        .then((categories) => (this.categories = categories));
     },
   },
 };

@@ -83,7 +83,6 @@ export default {
   },
   data() {
     return {
-      expense: {},
       expenses: [],
       model: new Model(),
       updateModel: false,
