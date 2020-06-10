@@ -15,10 +15,10 @@
             </tr>
           </thead>
           <tbody>
-            <px-expense
-              v-for="expense in expenses"
-              :key="expense.id"
-              :expense="expense"
+            <px-account
+              v-for="account in accounts"
+              :key="account.id"
+              :accountData="account"
               v-on:actions-event="actionsEvent"
             />
           </tbody>
@@ -31,8 +31,8 @@
             type="button"
             class="btn btn-danger"
             data-toggle="modal"
-            data-target="#addExpenseModal"
-            @click="reinitializeModel"
+            data-target="#accountModal"
+            @click="reinitializeModel('expense')"
           >
             Add expense -
           </button>
@@ -43,23 +43,26 @@
             type="button"
             class="btn btn-success"
             data-toggle="modal"
-            data-target="#addIncomeModal"
+            data-target="#accountModal"
+            @click="reinitializeModel('income')"
           >
             Add income +
           </button>
         </div>
       </div>
     </div>
-    <px-add-expense-modal v-on:actions-event="actionsEvent" :expense="model" />
-    <px-add-income-modal />
+    <px-account-modal
+      v-on:actions-event="actionsEvent"
+      :accountData="model"
+      :type="accountType"
+    />
   </div>
 </template>
 
 <script>
 import PxHeader from "@/components/PxHeader";
-import PxExpense from "@/components/PxExpense";
-import PxAddExpenseModal from "@/components/PxAddExpenseModal";
-import PxAddIncomeModal from "@/components/PxAddIncomeModal";
+import PxAccount from "@/components/PxAccount";
+import PxAccountModal from "@/components/PxAccountModal";
 
 import api from "@/api.js";
 
@@ -77,33 +80,47 @@ export default {
   name: "App",
   components: {
     PxHeader,
-    PxExpense,
-    PxAddExpenseModal,
-    PxAddIncomeModal,
+    PxAccount,
+    PxAccountModal,
   },
   data() {
     return {
+      accounts: [],
+      incomes: [],
       expenses: [],
       model: new Model(),
       updateModel: false,
+      accountType: "",
     };
   },
-  created() {
-    api.getExpenses().then((expenses) => (this.expenses = expenses));
+  async created() {
+    await api.getIncomes().then((incomes) => (this.incomes = incomes));
+    await api.getExpenses().then((expenses) => (this.expenses = expenses));
+    this.accounts = this.accounts.concat(this.incomes);
+    this.accounts = this.accounts.concat(this.expenses);
   },
   methods: {
-    actionsEvent(payload) {
+    async actionsEvent(payload) {
       if (payload.action == "reload") {
-        api.getExpenses().then((expenses) => (this.expenses = expenses));
-      } else if (payload.action == "edit-expense") {
-        console.log(payload);
+        await api.getIncomes().then((incomes) => (this.incomes = incomes));
+        await api.getExpenses().then((expenses) => (this.expenses = expenses));
+        this.accounts = [];
+        this.accounts = this.accounts.concat(this.incomes);
+        this.accounts = this.accounts.concat(this.expenses);
+      } else if (payload.action == "edit-account") {
         this.model = payload.data;
         this.updateModel = true;
-        document.getElementById("addExpenseButton").click();
+        // open 'AddAccountModal'
+        if (this.model.type == "expense") {
+          document.getElementById("addExpenseButton").click();
+        } else {
+          document.getElementById("addIncomeButton").click();
+        }
         this.updateModel = false;
       }
     },
-    reinitializeModel() {
+    reinitializeModel(accountType) {
+      this.accountType = accountType;
       if (!this.updateModel) {
         this.model = new Model();
       }

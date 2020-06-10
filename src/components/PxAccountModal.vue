@@ -3,16 +3,39 @@
   <div
     class="modal fade"
     ref="vuemodal"
-    id="addExpenseModal"
+    id="accountModal"
     tabindex="-1"
     role="dialog"
-    aria-labelledby="addExpenseModalLabel"
+    aria-labelledby="accountModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addExpenseModalLabel">New expense</h5>
+          <div v-if="type == 'expense'">
+            <h5
+              class="modal-title"
+              id="accountModalLabel"
+              v-if="!accountData.id"
+            >
+              New expense
+            </h5>
+            <h5 class="modal-title" id="accountModalLabel" v-else>
+              Update expense
+            </h5>
+          </div>
+          <div v-else>
+            <h5
+              class="modal-title"
+              id="accountModalLabel"
+              v-if="!accountData.id"
+            >
+              New income
+            </h5>
+            <h5 class="modal-title" id="accountModalLabel" v-else>
+              Update income
+            </h5>
+          </div>
           <button
             type="button"
             class="close"
@@ -38,7 +61,7 @@
                 </div>
                 <input
                   type="number"
-                  v-model="expense.amount"
+                  v-model="accountData.amount"
                   placeholder="Amount"
                   class="form-control"
                 />
@@ -47,7 +70,7 @@
             <div class="form-group dropdown d-flex">
               <select
                 v-if="!isAddCategoryForm"
-                v-model="expense.category"
+                v-model="accountData.category"
                 class="form-control col-sm-10"
               >
                 <option disabled selected="selected" value>Category</option>
@@ -75,7 +98,7 @@
             <div class="form-group">
               <textarea
                 type="text"
-                v-model="expense.notes"
+                v-model="accountData.notes"
                 placeholder="Notes"
                 class="form-control"
                 cols="20"
@@ -86,29 +109,50 @@
         </div>
         <div class="modal-footer">
           <button
-            id="closeExpenseModal"
+            id="closeAccountModal"
             type="button"
             class="btn btn-secondary"
             data-dismiss="modal"
           >
             Close
           </button>
-          <button
-            v-if="expense.id"
-            @click="addExpense"
-            type="button"
-            class="btn btn-primary"
-          >
-            Update
-          </button>
-          <button
-            v-else
-            @click="addExpense"
-            type="button"
-            class="btn btn-primary"
-          >
-            Save
-          </button>
+
+          <div v-if="type == 'expense'">
+            <button
+              v-if="accountData.id"
+              @click="addAccount"
+              type="button"
+              class="btn btn-primary"
+            >
+              Update expense
+            </button>
+            <button
+              v-else
+              @click="addAccount"
+              type="button"
+              class="btn btn-primary"
+            >
+              Save expense
+            </button>
+          </div>
+          <div v-else>
+            <button
+              v-if="accountData.id"
+              @click="addAccount"
+              type="button"
+              class="btn btn-primary"
+            >
+              Update income
+            </button>
+            <button
+              v-else
+              @click="addAccount"
+              type="button"
+              class="btn btn-primary"
+            >
+              Save income
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -120,7 +164,7 @@ import api from "@/api.js";
 import PxAddCategory from "@/components/PxAddCategory";
 
 export default {
-  name: "PxAddExpenseModal",
+  name: "PxAccountModal",
   components: {
     PxAddCategory,
   },
@@ -138,45 +182,61 @@ export default {
     };
   },
   props: {
-    expense: {
+    accountData: {
       type: Object,
       default: () => {},
     },
+    type: {
+      type: String,
+    },
   },
   mounted() {
-    this.getCategories();
+    // this.getCategories();
+  },
+  watch: {
+    type: function() {
+      this.getCategories(this.type);
+    },
   },
   methods: {
-    async addExpense() {
-      console.log(this.expense);
+    async addAccount() {
       this.errors = [];
-      if (!this.expense.amount || this.expense.amount == 0) {
+      if (!this.accountData.amount || this.accountData.amount == 0) {
         this.errors.push("Amount required");
       }
-      if (!this.expense.category) {
+      if (!this.accountData.category) {
         this.errors.push("Category required");
       }
-      if (!this.expense.notes) {
+      if (!this.accountData.notes) {
         this.errors.push("Notes required");
       }
       if (!this.errors.length) {
-        if (!this.expense.id) {
-          this.requestMessage = await api.addExpense(this.expense);
-        } else {
-          this.requestMessage = await api.updateExpense(this.expense);
+        if (this.type == "expense") {
+          if (!this.accountData.id) {
+            this.requestMessage = await api.addExpense(this.accountData);
+          } else {
+            this.requestMessage = await api.updateExpense(this.accountData);
+          }
+        } else if (this.type == "income") {
+          if (!this.accountData.id) {
+            this.requestMessage = await api.addIncome(this.accountData);
+          } else {
+            this.requestMessage = await api.updateIncome(this.accountData);
+          }
         }
         alert(this.requestMessage);
-        document.getElementById("closeExpenseModal").click();
+        document.getElementById("closeAccountModal").click();
         this.$emit("actions-event", {
           action: "reload",
           data: null,
         });
       }
     },
-    getCategories() {
+    getCategories(type) {
+      // hide add category form
       this.isAddCategoryForm = false;
       api
-        .getCategories("expense")
+        .getCategories(type)
         .then((categories) => (this.categories = categories));
     },
   },

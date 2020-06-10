@@ -9,6 +9,7 @@ const getExpenses = async () => {
     index: index + 1,
     id: result._id,
     amount: result.amount,
+    type: "expense",
     category: {
       categoryId: result.category ? result.category.categoryId : "",
       name: result.category ? result.category.name : "",
@@ -17,6 +18,26 @@ const getExpenses = async () => {
     date: result.createdAt,
   }));
   return expenses;
+};
+
+// GET incomes by userID
+const getIncomes = async () => {
+  const res = await fetch(`${apiUrl}/incomes`);
+  const data = await res.json();
+  console.log(data);
+  let incomes = data.data.map((result, index) => ({
+    index: index + 1,
+    id: result._id,
+    amount: result.amount,
+    type: "income",
+    category: {
+      categoryId: result.category ? result.category.categoryId : "",
+      name: result.category ? result.category.name : "",
+    },
+    notes: result.notes,
+    date: result.createdAt,
+  }));
+  return incomes;
 };
 
 // POST create expense
@@ -43,17 +64,15 @@ const updateExpense = async (expense) => {
     },
   });
   const data = await res.json();
-  console.log(data);
   return data.message;
 };
+
 // DELETE delete expense by id
 const deleteExpense = async (expenseId) => {
   const res = await fetch(`${apiUrl}/expenses/${expenseId}`, {
     method: "DELETE",
   });
   const data = await res.json();
-  console.log("deleteExpense");
-  console.log(data);
   return data.message;
 };
 
@@ -67,7 +86,28 @@ const addIncome = async (income) => {
     },
   });
   const data = await res.json();
-  console.log(data);
+  return data.message;
+};
+
+// PUT update income
+const updateIncome = async (income) => {
+  const res = await fetch(`${apiUrl}/incomes/${income.id}`, {
+    method: "PUT",
+    body: JSON.stringify(income),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  return data.message;
+};
+
+// DELETE delete income by id
+const deleteIncome = async (incomeId) => {
+  const res = await fetch(`${apiUrl}/incomes/${incomeId}`, {
+    method: "DELETE",
+  });
+  const data = await res.json();
   return data.message;
 };
 
@@ -92,7 +132,6 @@ const addCategory = async (category) => {
     },
   });
   const data = await res.json();
-  console.log(data);
   return data.message;
 };
 
@@ -101,7 +140,10 @@ export default {
   addExpense,
   updateExpense,
   deleteExpense,
+  getIncomes,
   addIncome,
+  updateIncome,
+  deleteIncome,
   getCategories,
   addCategory,
 };
