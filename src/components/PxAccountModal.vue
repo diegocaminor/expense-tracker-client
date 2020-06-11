@@ -12,36 +12,15 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <div v-if="type == 'expense'">
-            <h5
-              class="modal-title"
-              id="accountModalLabel"
-              v-if="!accountData.id"
-            >
-              New expense
-            </h5>
-            <h5 class="modal-title" id="accountModalLabel" v-else>
-              Update expense
-            </h5>
+          <div v-if="accountType == 'expense'">
+            <h5 class="modal-title" id="accountModalLabel" v-if="!accountData.id">New expense</h5>
+            <h5 class="modal-title" id="accountModalLabel" v-else>Update expense</h5>
           </div>
           <div v-else>
-            <h5
-              class="modal-title"
-              id="accountModalLabel"
-              v-if="!accountData.id"
-            >
-              New income
-            </h5>
-            <h5 class="modal-title" id="accountModalLabel" v-else>
-              Update income
-            </h5>
+            <h5 class="modal-title" id="accountModalLabel" v-if="!accountData.id">New income</h5>
+            <h5 class="modal-title" id="accountModalLabel" v-else>Update income</h5>
           </div>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -69,7 +48,7 @@
             </div>
             <div class="form-group dropdown d-flex">
               <select
-                v-if="!isAddCategoryForm"
+                v-if="!showAddCategoryForm"
                 v-model="accountData.category"
                 class="form-control col-sm-10"
               >
@@ -78,20 +57,21 @@
                   v-for="category in categories"
                   :key="category.id"
                   :value="category"
-                  >{{ category.name | capitalizeFirstLetter }}</option
-                >
+                >{{ category.name | capitalizeFirstLetter }}</option>
               </select>
+              <!--add category form-->
               <px-add-category
-                @toggle-is-add-category-form="getCategories()"
+                @toggle-get-categories="getCategories(accountType)"
                 :category="newCategory"
                 v-else
               />
+              <!--end add category form-->
               <div class="col-sm-2">
                 <font-awesome-icon
-                  v-if="!isAddCategoryForm"
+                  v-if="!showAddCategoryForm"
                   class="faIcon mt-2"
                   icon="plus"
-                  @click="isAddCategoryForm = !isAddCategoryForm"
+                  @click="showAddCategoryForm = !showAddCategoryForm"
                 />
               </div>
             </div>
@@ -113,27 +93,17 @@
             type="button"
             class="btn btn-secondary"
             data-dismiss="modal"
-          >
-            Close
-          </button>
+            @click="showAddCategoryForm=false"
+          >Close</button>
 
-          <div v-if="type == 'expense'">
+          <div v-if="accountType == 'expense'">
             <button
               v-if="accountData.id"
               @click="addAccount"
               type="button"
               class="btn btn-primary"
-            >
-              Update expense
-            </button>
-            <button
-              v-else
-              @click="addAccount"
-              type="button"
-              class="btn btn-primary"
-            >
-              Save expense
-            </button>
+            >Update expense</button>
+            <button v-else @click="addAccount" type="button" class="btn btn-primary">Save expense</button>
           </div>
           <div v-else>
             <button
@@ -141,17 +111,8 @@
               @click="addAccount"
               type="button"
               class="btn btn-primary"
-            >
-              Update income
-            </button>
-            <button
-              v-else
-              @click="addAccount"
-              type="button"
-              class="btn btn-primary"
-            >
-              Save income
-            </button>
+            >Update income</button>
+            <button v-else @click="addAccount" type="button" class="btn btn-primary">Save income</button>
           </div>
         </div>
       </div>
@@ -166,37 +127,37 @@ import PxAddCategory from "@/components/PxAddCategory";
 export default {
   name: "PxAccountModal",
   components: {
-    PxAddCategory,
+    PxAddCategory
   },
   data() {
     return {
       newCategory: {
         id: "",
         name: "",
-        type: "expense",
+        type: ""
       },
       categories: [],
       requestMessage: "",
       errors: [],
-      isAddCategoryForm: false,
+      showAddCategoryForm: false
     };
   },
   props: {
     accountData: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
-    type: {
-      type: String,
-    },
-  },
-  mounted() {
-    // this.getCategories();
+    accountType: {
+      type: String
+    }
   },
   watch: {
-    type: function() {
-      this.getCategories(this.type);
-    },
+    accountType: function() {
+      this.getCategories(this.accountType);
+      this.newCategory.id = "";
+      this.newCategory.name = "";
+      this.newCategory.type = this.accountType;
+    }
   },
   methods: {
     async addAccount() {
@@ -211,13 +172,13 @@ export default {
         this.errors.push("Notes required");
       }
       if (!this.errors.length) {
-        if (this.type == "expense") {
+        if (this.accountType == "expense") {
           if (!this.accountData.id) {
             this.requestMessage = await api.addExpense(this.accountData);
           } else {
             this.requestMessage = await api.updateExpense(this.accountData);
           }
-        } else if (this.type == "income") {
+        } else if (this.accountType == "income") {
           if (!this.accountData.id) {
             this.requestMessage = await api.addIncome(this.accountData);
           } else {
@@ -228,17 +189,20 @@ export default {
         document.getElementById("closeAccountModal").click();
         this.$emit("actions-event", {
           action: "reload",
-          data: null,
+          data: null
         });
       }
     },
-    getCategories(type) {
-      // hide add category form
-      this.isAddCategoryForm = false;
+    getCategories(accountType) {
+      // hide 'add category form'
+      this.showAddCategoryForm = false;
       api
-        .getCategories(type)
-        .then((categories) => (this.categories = categories));
+        .getCategories(accountType)
+        .then(categories => (this.categories = categories));
     },
-  },
+    hideAddCategoryForm() {
+      if (this.showAddCategoryForm) this.showAddCategoryForm = false;
+    }
+  }
 };
 </script>

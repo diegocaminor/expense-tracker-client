@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="form-group d-flex ">
+    <div class="form-group d-flex">
       <div class="form-group">
         <div v-if="errors.length">
           <div class="text-left alert alert-danger" role="alert">
@@ -16,16 +16,8 @@
           class="form-control"
         />
       </div>
-      <font-awesome-icon
-        class="faIcon mt-2 mr-2"
-        icon="save"
-        v-on:click="saveCategory()"
-      />
-      <font-awesome-icon
-        class="faIcon mt-2"
-        icon="times"
-        v-on:click="cancelAddCategory()"
-      />
+      <font-awesome-icon class="faIcon mt-2 mr-2" icon="save" v-on:click="saveCategory()" />
+      <font-awesome-icon class="faIcon mt-2" icon="times" v-on:click="cancelAddCategory()" />
     </div>
   </div>
 </template>
@@ -38,19 +30,17 @@ export default {
 
   data() {
     return {
-      errors: [],
+      errors: []
     };
   },
   props: {
     category: {
       type: Object,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   methods: {
     async saveCategory() {
-      console.log("this.category");
-      console.log(this.category);
       this.errors = [];
       if (!this.category.name) {
         this.errors.push("Name required");
@@ -63,12 +53,12 @@ export default {
           this.requestMessage = await api.addCategory(this.category);
           alert(this.requestMessage);
         }
-        this.$emit("toggle-is-add-category-form");
+        this.$emit("toggle-get-categories");
       }
     },
     cancelAddCategory() {
-      this.$emit("toggle-is-add-category-form");
-    },
-  },
+      this.$emit("toggle-get-categories");
+    }
+  }
 };
 </script>
