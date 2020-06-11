@@ -1,6 +1,6 @@
 <template>
   <div class="login-form">
-    <form>
+    <form v-on:submit.prevent="signup">
       <h2 class="text-center">Sign up</h2>
       <div class="form-group">
         <input
@@ -8,6 +8,7 @@
           class="form-control"
           placeholder="First name"
           required="required"
+          v-model="user.firstName"
         />
       </div>
       <div class="form-group">
@@ -16,6 +17,7 @@
           class="form-control"
           placeholder="Last name"
           required="required"
+          v-model="user.lastName"
         />
       </div>
       <div class="form-group">
@@ -24,6 +26,7 @@
           class="form-control"
           placeholder="UserName"
           required="required"
+          v-model="user.userName"
         />
       </div>
       <div class="form-group">
@@ -33,6 +36,7 @@
           class="form-control"
           placeholder="Email"
           required="required"
+          v-model="user.email"
         />
       </div>
       <div class="form-group">
@@ -41,6 +45,7 @@
           class="form-control"
           placeholder="Password"
           required="required"
+          v-model="user.password"
         />
       </div>
       <div class="form-group">
@@ -56,8 +61,30 @@
 </template>
 
 <script>
+import api from "@/api.js";
+
 export default {
   name: "SignUp",
+  data() {
+    return {
+      user: {
+        firstName: "",
+        lastName: "",
+        userName: "",
+        email: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    async signup() {
+      console.log("signup");
+      console.log(this.user);
+      const responseMessage = await api.signUp(this.user);
+      alert(responseMessage);
+      this.$router.push({ name: "login" });
+    },
+  },
 };
 </script>
 

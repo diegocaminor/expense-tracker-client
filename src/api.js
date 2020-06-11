@@ -1,5 +1,19 @@
 const apiUrl = "http://localhost:3000/api";
 
+// POST signup
+const signUp = async (user) => {
+  const res = await fetch(`${apiUrl}/auth/sign-up`, {
+    method: "POST",
+    body: JSON.stringify(user),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  return data.message;
+};
+
 // GET expenses by userID
 const getExpenses = async () => {
   const res = await fetch(`${apiUrl}/expenses`);
@@ -136,6 +150,7 @@ const addCategory = async (category) => {
 };
 
 export default {
+  signUp,
   getExpenses,
   addExpense,
   updateExpense,

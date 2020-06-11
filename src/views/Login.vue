@@ -1,6 +1,6 @@
 <template>
   <div class="login-form">
-    <form>
+    <form v-on:submit.prevent>
       <h2 class="text-center">Log in</h2>
       <div class="form-group">
         <input
