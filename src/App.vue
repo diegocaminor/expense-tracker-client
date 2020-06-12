@@ -1,22 +1,26 @@
 <template>
   <div id="app">
-    <px-header />
+    <px-header v-show="token" />
     <router-view class="container" />
   </div>
 </template>
 
 <script>
 import PxHeader from "@/components/PxHeader";
+import cookies from "@/assets/scripts/cookies";
+const { token } = cookies;
 
 export default {
   name: "App",
   components: {
-    PxHeader,
+    PxHeader
   },
   data() {
-    return {};
+    return {
+      token
+    };
   },
-  methods: {},
+  methods: {}
 };
 </script>
 

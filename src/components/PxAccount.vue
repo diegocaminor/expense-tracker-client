@@ -11,35 +11,27 @@
     <td>{{ accountData.amount | dollar }}</td>
     <td>{{ accountData.date | moment }}</td>
     <td>
-      <font-awesome-icon
-        class="faIcon mr-2"
-        icon="edit"
-        v-on:click="editAccount(accountData)"
-      />
-      <font-awesome-icon
-        class="faIcon "
-        icon="trash"
-        v-on:click="deleteAccount(accountData.id)"
-      />
+      <font-awesome-icon class="faIcon mr-2" icon="edit" v-on:click="editAccount(accountData)" />
+      <font-awesome-icon class="faIcon" icon="trash" v-on:click="deleteAccount(accountData.id)" />
     </td>
   </tr>
 </template>
 
 <script>
-import api from "@/api.js";
+import api from "@/assets/scripts/api.js";
 
 export default {
   name: "PxAccount",
   data() {
     return {
-      requestMessage: "",
+      requestMessage: ""
     };
   },
   props: {
     accountData: {
       type: Object,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   methods: {
     async deleteAccount(accountId) {
@@ -51,15 +43,15 @@ export default {
       alert(this.requestMessage);
       this.$emit("actions-event", {
         action: "reload",
-        data: null,
+        data: null
       });
     },
     editAccount(account) {
       this.$emit("actions-event", {
         action: "edit-account",
-        data: account,
+        data: account
       });
-    },
-  },
+    }
+  }
 };
 </script>

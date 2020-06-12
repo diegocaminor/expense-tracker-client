@@ -1,4 +1,15 @@
+import cookies from "@/assets/scripts/cookies";
+const { token } = cookies;
 const apiUrl = "http://localhost:3000/api";
+
+const options = {
+  credentials: "include",
+  headers: {
+    Authorization: "Bearer " + token,
+    "X-FP-API-KEY": "iphone",
+    "Content-Type": "application/json",
+  },
+};
 
 // POST signUp
 const signUp = async (user) => {
@@ -16,7 +27,6 @@ const signUp = async (user) => {
 
 // POST signIn
 const signIn = async (user) => {
-  console.log(user);
   const res = await fetch(`${apiUrl}/auth/sign-in`, {
     method: "POST",
     body: JSON.stringify(user),
@@ -39,10 +49,7 @@ const signIn = async (user) => {
 
 // GET expenses by userID
 const getExpenses = async () => {
-  const res = await fetch(`${apiUrl}/expenses`, {
-    Authorization: "Bearer " + document.token,
-    credentials: "include",
-  });
+  const res = await fetch(`${apiUrl}/expenses`, options);
   const data = await res.json();
   console.log(data);
   let expenses = data.data.map((result, index) => ({
@@ -62,7 +69,7 @@ const getExpenses = async () => {
 
 // GET incomes by userID
 const getIncomes = async () => {
-  const res = await fetch(`${apiUrl}/incomes`);
+  const res = await fetch(`${apiUrl}/incomes`, options);
   const data = await res.json();
   console.log(data);
   let incomes = data.data.map((result, index) => ({

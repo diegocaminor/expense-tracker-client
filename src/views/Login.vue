@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import api from "@/api.js";
+import api from "@/assets/scripts/api.js";
 
 export default {
   name: "Login",

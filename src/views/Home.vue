@@ -32,9 +32,7 @@
             data-toggle="modal"
             data-target="#accountModal"
             @click="reinitializeModel('expense')"
-          >
-            Add expense -
-          </button>
+          >Add expense -</button>
         </div>
         <div class="col-sm-3">
           <button
@@ -44,9 +42,7 @@
             data-toggle="modal"
             data-target="#accountModal"
             @click="reinitializeModel('income')"
-          >
-            Add income +
-          </button>
+          >Add income +</button>
         </div>
       </div>
     </div>
@@ -62,7 +58,7 @@
 import PxAccount from "@/components/PxAccount";
 import PxAccountModal from "@/components/PxAccountModal";
 
-import api from "@/api.js";
+import api from "@/assets/scripts/api.js";
 
 class Model {
   constructor() {
@@ -78,7 +74,7 @@ export default {
   name: "Home",
   components: {
     PxAccount,
-    PxAccountModal,
+    PxAccountModal
   },
   data() {
     return {
@@ -87,20 +83,20 @@ export default {
       expenses: [],
       model: new Model(),
       updateModel: false,
-      accountType: "",
+      accountType: ""
     };
   },
   async created() {
-    await api.getIncomes().then((incomes) => (this.incomes = incomes));
-    await api.getExpenses().then((expenses) => (this.expenses = expenses));
+    await api.getIncomes().then(incomes => (this.incomes = incomes));
+    await api.getExpenses().then(expenses => (this.expenses = expenses));
     this.accounts = this.accounts.concat(this.incomes);
     this.accounts = this.accounts.concat(this.expenses);
   },
   methods: {
     async actionsEvent(payload) {
       if (payload.action == "reload") {
-        await api.getIncomes().then((incomes) => (this.incomes = incomes));
-        await api.getExpenses().then((expenses) => (this.expenses = expenses));
+        await api.getIncomes().then(incomes => (this.incomes = incomes));
+        await api.getExpenses().then(expenses => (this.expenses = expenses));
         this.accounts = [];
         this.accounts = this.accounts.concat(this.incomes);
         this.accounts = this.accounts.concat(this.expenses);
@@ -121,7 +117,7 @@ export default {
       if (!this.updateModel) {
         this.model = new Model();
       }
-    },
-  },
+    }
+  }
 };
 </script>

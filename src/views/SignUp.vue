@@ -49,9 +49,7 @@
         />
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block">
-          Sign up
-        </button>
+        <button type="submit" class="btn btn-primary btn-block">Sign up</button>
       </div>
       <div class="clearfix">
         <router-link to="/login">Already have account? Login!</router-link>
@@ -61,7 +59,7 @@
 </template>
 
 <script>
-import api from "@/api.js";
+import api from "@/assets/scripts/api.js";
 
 export default {
   name: "SignUp",
@@ -72,8 +70,8 @@ export default {
         lastName: "",
         userName: "",
         email: "",
-        password: "",
-      },
+        password: ""
+      }
     };
   },
   methods: {
@@ -81,8 +79,8 @@ export default {
       const responseMessage = await api.signUp(this.user);
       alert(responseMessage);
       this.$router.push({ name: "login" });
-    },
-  },
+    }
+  }
 };
 </script>
 

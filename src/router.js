@@ -7,13 +7,17 @@ import SignUp from "@/views/SignUp";
 
 Vue.use(Router);
 
+import cookies from "@/assets/scripts/cookies";
+
+let { token } = cookies;
+
 export default new Router({
   mode: "history",
   routes: [
     {
       path: "/",
       name: "home",
-      component: Home,
+      component: token ? Home : Login,
     },
     {
       path: "/login",
