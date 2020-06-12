@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <div class="row pt-5">
+      <div class="row pt-5" v-if="expenses.length>0 || incomes.length>0">
         <table class="table">
           <thead>
             <tr>
@@ -22,6 +22,9 @@
             />
           </tbody>
         </table>
+      </div>
+      <div v-else class="row pt-5 pb-5 col-sm-4 offset-sm-4">
+        <h2>You must learn to save and spend afterwards, let's tracking your accounts!😊</h2>
       </div>
       <div class="row pt-3 pb-5">
         <div class="offset-sm-3 col-sm-3 pb-2">
@@ -59,14 +62,16 @@ import PxAccount from "@/components/PxAccount";
 import PxAccountModal from "@/components/PxAccountModal";
 
 import api from "@/assets/scripts/api.js";
+import cookies from "@/assets/scripts/cookies";
+const { id } = cookies;
 
 class Model {
-  constructor() {
-    this.id = "";
-    this.userId = "5ed9f0c97745d7515f0910b0";
-    this.amount = 0;
-    this.category = "";
-    this.notes = "";
+  constructor(id, userId, amount, category, notes) {
+    this.id = id || "";
+    this.userId = userId || "";
+    this.amount = amount || 0;
+    this.category = category || "";
+    this.notes = notes || "";
   }
 }
 
@@ -81,7 +86,7 @@ export default {
       accounts: [],
       incomes: [],
       expenses: [],
-      model: new Model(),
+      model: new Model("", id, 0, "", ""),
       updateModel: false,
       accountType: ""
     };
@@ -115,7 +120,7 @@ export default {
     reinitializeModel(accountType) {
       this.accountType = accountType;
       if (!this.updateModel) {
-        this.model = new Model();
+        this.model = new Model("", id, 0, "", "");
       }
     }
   }

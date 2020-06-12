@@ -3,9 +3,10 @@ const { token } = cookies;
 const apiUrl = "http://localhost:3000/api";
 
 const options = {
+  withCredentials: true,
   credentials: "include",
   headers: {
-    Authorization: "Bearer " + token,
+    Authorization: `Bearer ${token}`,
     "X-FP-API-KEY": "iphone",
     "Content-Type": "application/json",
   },
@@ -49,7 +50,10 @@ const signIn = async (user) => {
 
 // GET expenses by userID
 const getExpenses = async () => {
-  const res = await fetch(`${apiUrl}/expenses`, options);
+  const res = await fetch(`${apiUrl}/expenses`, {
+    method: "GET",
+    ...options,
+  });
   const data = await res.json();
   console.log(data);
   let expenses = data.data.map((result, index) => ({
@@ -69,7 +73,10 @@ const getExpenses = async () => {
 
 // GET incomes by userID
 const getIncomes = async () => {
-  const res = await fetch(`${apiUrl}/incomes`, options);
+  const res = await fetch(`${apiUrl}/incomes`, {
+    method: "GET",
+    ...options,
+  });
   const data = await res.json();
   console.log(data);
   let incomes = data.data.map((result, index) => ({
@@ -92,9 +99,7 @@ const addExpense = async (expense) => {
   const res = await fetch(`${apiUrl}/expenses`, {
     method: "POST",
     body: JSON.stringify(expense),
-    headers: {
-      "Content-Type": "application/json",
-    },
+    ...options,
   });
   const data = await res.json();
   console.log(data);
@@ -106,9 +111,7 @@ const updateExpense = async (expense) => {
   const res = await fetch(`${apiUrl}/expenses/${expense.id}`, {
     method: "PUT",
     body: JSON.stringify(expense),
-    headers: {
-      "Content-Type": "application/json",
-    },
+    ...options,
   });
   const data = await res.json();
   return data.message;
@@ -118,6 +121,7 @@ const updateExpense = async (expense) => {
 const deleteExpense = async (expenseId) => {
   const res = await fetch(`${apiUrl}/expenses/${expenseId}`, {
     method: "DELETE",
+    ...options,
   });
   const data = await res.json();
   return data.message;
@@ -128,9 +132,7 @@ const addIncome = async (income) => {
   const res = await fetch(`${apiUrl}/incomes`, {
     method: "POST",
     body: JSON.stringify(income),
-    headers: {
-      "Content-Type": "application/json",
-    },
+    ...options,
   });
   const data = await res.json();
   return data.message;
@@ -141,9 +143,7 @@ const updateIncome = async (income) => {
   const res = await fetch(`${apiUrl}/incomes/${income.id}`, {
     method: "PUT",
     body: JSON.stringify(income),
-    headers: {
-      "Content-Type": "application/json",
-    },
+    ...options,
   });
   const data = await res.json();
   return data.message;
@@ -153,6 +153,7 @@ const updateIncome = async (income) => {
 const deleteIncome = async (incomeId) => {
   const res = await fetch(`${apiUrl}/incomes/${incomeId}`, {
     method: "DELETE",
+    ...options,
   });
   const data = await res.json();
   return data.message;
@@ -160,7 +161,10 @@ const deleteIncome = async (incomeId) => {
 
 // GET categories
 const getCategories = async (type) => {
-  const res = await fetch(`${apiUrl}/categories/${type}`);
+  const res = await fetch(`${apiUrl}/categories/${type}`, {
+    method: "GET",
+    ...options,
+  });
   const data = await res.json();
   let categories = data.data.map((result) => ({
     categoryId: result._id,
@@ -174,9 +178,7 @@ const addCategory = async (category) => {
   const res = await fetch(`${apiUrl}/categories`, {
     method: "POST",
     body: JSON.stringify(category),
-    headers: {
-      "Content-Type": "application/json",
-    },
+    ...options,
   });
   const data = await res.json();
   return data.message;

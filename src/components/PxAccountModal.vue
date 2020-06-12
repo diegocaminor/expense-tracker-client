@@ -123,6 +123,8 @@
 <script>
 import api from "@/assets/scripts/api.js";
 import PxAddCategory from "@/components/PxAddCategory";
+import cookies from "@/assets/scripts/cookies";
+const { id } = cookies;
 
 export default {
   name: "PxAccountModal",
@@ -133,6 +135,7 @@ export default {
     return {
       newCategory: {
         id: "",
+        userId: id,
         name: "",
         type: ""
       },

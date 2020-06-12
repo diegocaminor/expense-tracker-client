@@ -17,8 +17,10 @@ const getCookie = (cookiName) => {
 
 const token = getCookie("token");
 const userName = getCookie("userName");
+const id = getCookie("id");
 
 export default {
   token,
   userName,
+  id,
 };
