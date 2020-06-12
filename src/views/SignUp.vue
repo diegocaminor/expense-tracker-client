@@ -1,6 +1,6 @@
 <template>
   <div class="login-form">
-    <form v-on:submit.prevent="signup">
+    <form v-on:submit.prevent="signUp">
       <h2 class="text-center">Sign up</h2>
       <div class="form-group">
         <input
@@ -77,9 +77,7 @@ export default {
     };
   },
   methods: {
-    async signup() {
-      console.log("signup");
-      console.log(this.user);
+    async signUp() {
       const responseMessage = await api.signUp(this.user);
       alert(responseMessage);
       this.$router.push({ name: "login" });

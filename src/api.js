@@ -1,6 +1,6 @@
 const apiUrl = "http://localhost:3000/api";
 
-// POST signup
+// POST signUp
 const signUp = async (user) => {
   const res = await fetch(`${apiUrl}/auth/sign-up`, {
     method: "POST",
@@ -14,9 +14,35 @@ const signUp = async (user) => {
   return data.message;
 };
 
+// POST signIn
+const signIn = async (user) => {
+  console.log(user);
+  const res = await fetch(`${apiUrl}/auth/sign-in`, {
+    method: "POST",
+    body: JSON.stringify(user),
+    headers: {
+      Authorization: `Basic ${btoa(`${user.userName}:${user.password}`)}`,
+    },
+  });
+  const data = await res.json();
+  console.log(data);
+  if (data.token) {
+    document.cookie = `token=${data.token}`;
+    document.cookie = `id=${data.user.id}`;
+    document.cookie = `userName=${data.user.userName}`;
+  } else {
+    alert("Incorrect username or password");
+  }
+
+  return data.token;
+};
+
 // GET expenses by userID
 const getExpenses = async () => {
-  const res = await fetch(`${apiUrl}/expenses`);
+  const res = await fetch(`${apiUrl}/expenses`, {
+    Authorization: "Bearer " + document.token,
+    credentials: "include",
+  });
   const data = await res.json();
   console.log(data);
   let expenses = data.data.map((result, index) => ({
@@ -151,6 +177,7 @@ const addCategory = async (category) => {
 
 export default {
   signUp,
+  signIn,
   getExpenses,
   addExpense,
   updateExpense,
