@@ -2,6 +2,11 @@
   <div>
     <div class="container">
       <div class="row pt-5" v-if="expenses.length>0 || incomes.length>0">
+        <px-filters
+          :currentDate="formattedDate"
+          :currentMonth="formattedMonth"
+          :currentYear="formattedYear"
+        />
         <table class="table">
           <thead>
             <tr>
@@ -60,18 +65,20 @@
 <script>
 import PxAccount from "@/components/PxAccount";
 import PxAccountModal from "@/components/PxAccountModal";
+import PxFilters from "@/components/PxFilters";
 
 import api from "@/assets/scripts/api.js";
 import cookies from "@/assets/scripts/cookies";
 const { id } = cookies;
 
 class Model {
-  constructor(id, userId, amount, category, notes) {
+  constructor(id, userId, amount, category, notes, createdAt) {
     this.id = id || "";
     this.userId = userId || "";
     this.amount = amount || 0;
     this.category = category || "";
     this.notes = notes || "";
+    this.createdAt = createdAt || "";
   }
 }
 
@@ -79,14 +86,18 @@ export default {
   name: "Home",
   components: {
     PxAccount,
-    PxAccountModal
+    PxAccountModal,
+    PxFilters
   },
   data() {
     return {
       accounts: [],
       incomes: [],
       expenses: [],
-      model: new Model("", id, 0, "", ""),
+      formattedDate: this.formatDate(new Date()),
+      formattedMonth: this.formatMonth(new Date()),
+      formattedYear: this.formatYear(new Date()),
+      model: new Model("", id, 0, "", "", this.formattedDate),
       updateModel: false,
       accountType: ""
     };
@@ -107,6 +118,8 @@ export default {
         this.accounts = this.accounts.concat(this.expenses);
       } else if (payload.action == "edit-account") {
         this.model = payload.data;
+        this.model.createdAt = this.formatDate(payload.data.date);
+
         this.updateModel = true;
         // open 'AddAccountModal'
         if (this.model.type == "expense") {
@@ -120,8 +133,33 @@ export default {
     reinitializeModel(accountType) {
       this.accountType = accountType;
       if (!this.updateModel) {
-        this.model = new Model("", id, 0, "", "");
+        this.model = new Model("", id, 0, "", "", this.formatDate(new Date()));
       }
+    },
+    formatDate(date) {
+      let d = new Date(date),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
+
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [year, month, day].join("-");
+    },
+    formatMonth(date) {
+      let d = new Date(date),
+        month = "" + (d.getMonth() + 1),
+        year = d.getFullYear();
+
+      if (month.length < 2) month = "0" + month;
+
+      return [year, month].join("-");
+    },
+    formatYear(date) {
+      let d = new Date(date),
+        year = d.getFullYear();
+      return year.toString();
     }
   }
 };

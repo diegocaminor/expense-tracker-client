@@ -85,6 +85,9 @@
                 row="10"
               ></textarea>
             </div>
+            <div class="form-group">
+              <input class="form-control" v-model="accountData.createdAt" type="date" />
+            </div>
           </form>
         </div>
         <div class="modal-footer">

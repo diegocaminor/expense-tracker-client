@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <px-header v-show="token" />
-    <router-view class="container" />
+    <router-view />
   </div>
 </template>
 
