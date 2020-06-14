@@ -59,18 +59,29 @@ export default {
     setQueryDate(event) {
       this.queryDate = event.target.value;
     },
-    getAccountsByFilter() {
+    async getAccountsByFilter() {
+      let accounts = [];
+      let queriedIncomes;
+      let queriedExpenses;
       if (this.filterSelected == "all") {
-        api.getExpenses().then(queriedExpenses => {
-          this.$emit("search-result", queriedExpenses);
-        });
+        queriedIncomes = await api.getIncomes();
+        accounts = accounts.concat(queriedIncomes);
+        queriedExpenses = await api.getExpenses();
+        accounts = accounts.concat(queriedExpenses);
+        this.$emit("search-result", accounts);
       } else {
         if (this.queryDate != "") {
-          api
-            .getExpenses(this.filterSelected, this.queryDate)
-            .then(queriedExpenses => {
-              this.$emit("search-result", queriedExpenses);
-            });
+          queriedIncomes = await api.getIncomes(
+            this.filterSelected,
+            this.queryDate
+          );
+          accounts = accounts.concat(queriedIncomes);
+          queriedExpenses = await api.getExpenses(
+            this.filterSelected,
+            this.queryDate
+          );
+          accounts = accounts.concat(queriedExpenses);
+          this.$emit("search-result", accounts);
         } else {
           alert("Please, select a date");
         }

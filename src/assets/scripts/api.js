@@ -72,8 +72,8 @@ const getExpenses = async (queryFilter, queryDate) => {
 };
 
 // GET incomes by userID
-const getIncomes = async () => {
-  const res = await fetch(`${apiUrl}/incomes`, {
+const getIncomes = async (queryFilter, queryDate) => {
+  const res = await fetch(`${apiUrl}/incomes/${queryFilter}/${queryDate}`, {
     method: "GET",
     ...options,
   });
