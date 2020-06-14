@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="row pt-5">
-        <px-filters v-on:search-result="reloadAccounts" />
+        <px-filters class="filters" v-on:search-result="reloadAccounts" />
         <table class="table" v-if="accounts.length">
           <thead>
             <tr>

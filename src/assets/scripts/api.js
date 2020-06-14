@@ -49,13 +49,17 @@ const signIn = async (user) => {
 };
 
 // GET expenses by userID
-const getExpenses = async (queryFilter, queryDate) => {
-  const res = await fetch(`${apiUrl}/expenses/${queryFilter}/${queryDate}`, {
-    method: "GET",
-    ...options,
-  });
+const getExpenses = async (queryFilter, queryDate, isPieChart) => {
+  const res = await fetch(
+    `${apiUrl}/expenses/${queryFilter}/${queryDate}?isPieChart=${isPieChart}`,
+    {
+      method: "GET",
+      ...options,
+    }
+  );
   const data = await res.json();
-  console.log(data);
+
+  if (isPieChart) return data.data;
   let expenses = data.data.map((result, index) => ({
     index: index + 1,
     id: result._id,
@@ -184,17 +188,6 @@ const addCategory = async (category) => {
   return data.message;
 };
 
-// GET PieChart data
-const getPieChart = async () => {
-  const res = await fetch(`${apiUrl}/expenses/piechart`, {
-    method: "GET",
-    ...options,
-  });
-  const data = await res.json();
-  console.log(data);
-  return data.data;
-};
-
 export default {
   signUp,
   signIn,
@@ -208,5 +201,4 @@ export default {
   deleteIncome,
   getCategories,
   addCategory,
-  getPieChart,
 };
