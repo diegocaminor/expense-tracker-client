@@ -49,8 +49,8 @@ const signIn = async (user) => {
 };
 
 // GET expenses by userID
-const getExpenses = async () => {
-  const res = await fetch(`${apiUrl}/expenses`, {
+const getExpenses = async (queryFilter, queryDate) => {
+  const res = await fetch(`${apiUrl}/expenses/${queryFilter}/${queryDate}`, {
     method: "GET",
     ...options,
   });
