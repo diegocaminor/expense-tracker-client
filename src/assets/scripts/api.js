@@ -184,6 +184,17 @@ const addCategory = async (category) => {
   return data.message;
 };
 
+// GET PieChart data
+const getPieChart = async () => {
+  const res = await fetch(`${apiUrl}/expenses/piechart`, {
+    method: "GET",
+    ...options,
+  });
+  const data = await res.json();
+  console.log(data);
+  return data.data;
+};
+
 export default {
   signUp,
   signIn,
@@ -197,4 +208,5 @@ export default {
   deleteIncome,
   getCategories,
   addCategory,
+  getPieChart,
 };

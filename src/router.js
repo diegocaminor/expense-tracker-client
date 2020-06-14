@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 
 import Home from "@/views/Home";
+import PieChart from "@/views/PieChart";
 import Login from "@/views/Login";
 import SignUp from "@/views/SignUp";
 
@@ -18,6 +19,11 @@ export default new Router({
       path: "/",
       name: "home",
       component: token ? Home : Login,
+    },
+    {
+      path: "/piechart",
+      name: "piechart",
+      component: token ? PieChart : Login,
     },
     {
       path: "/login",

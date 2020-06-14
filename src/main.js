@@ -17,6 +17,7 @@ import {
   faTimes,
 } from "@fortawesome/free-solid-svg-icons/";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import VueApexCharts from "vue-apexcharts";
 
 Vue.filter("dollar", dollarFilter);
 Vue.filter("moment", momentFilter);
@@ -24,6 +25,7 @@ Vue.filter("capitalizeFirstLetter", capitalizeFirstLetterFilter);
 
 library.add(faEdit, faTrash, faMinus, faPlus, faSave, faTimes);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
+Vue.component("apexchart", VueApexCharts);
 
 Vue.config.productionTip = false;
 

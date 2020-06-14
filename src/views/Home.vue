@@ -24,7 +24,7 @@
           </tbody>
         </table>
         <div v-else class="row pt-5 pb-5 col-sm-4 offset-sm-4">
-          <h2>{{message}}</h2>
+          <h2>{{ message }}</h2>
         </div>
       </div>
 
@@ -37,7 +37,9 @@
             data-toggle="modal"
             data-target="#accountModal"
             @click="reinitializeModel('expense')"
-          >Add expense -</button>
+          >
+            Add expense -
+          </button>
         </div>
         <div class="col-sm-3">
           <button
@@ -47,7 +49,9 @@
             data-toggle="modal"
             data-target="#accountModal"
             @click="reinitializeModel('income')"
-          >Add income +</button>
+          >
+            Add income +
+          </button>
         </div>
       </div>
     </div>
@@ -59,7 +63,9 @@
     <div class="fixed-bottom p-3">
       <div>Total</div>
       <div class="total-amount">Incomes {{ incomesTotalAmount | dollar }}</div>
-      <div class="total-amount">Expenses {{ expensesTotalAmount | dollar }}</div>
+      <div class="total-amount">
+        Expenses {{ expensesTotalAmount | dollar }}
+      </div>
     </div>
   </div>
 </template>
@@ -89,7 +95,7 @@ export default {
   components: {
     PxAccount,
     PxAccountModal,
-    PxFilters
+    PxFilters,
   },
   data() {
     return {
@@ -103,31 +109,31 @@ export default {
       updateModel: false,
       accountType: "",
       message:
-        "You must learn to save and spend afterwards, let's tracking your accounts!😊"
+        "You must learn to save and spend afterwards, let's tracking your accounts!😊",
     };
   },
   async created() {
-    await api.getIncomes().then(incomes => (this.incomes = incomes));
-    await api.getExpenses().then(expenses => (this.expenses = expenses));
+    await api.getIncomes().then((incomes) => (this.incomes = incomes));
+    await api.getExpenses().then((expenses) => (this.expenses = expenses));
     this.accounts = this.accounts.concat(this.incomes);
     this.accounts = this.accounts.concat(this.expenses);
   },
   watch: {
     accounts: function() {
       this.incomesTotalAmount = this.accounts
-        .filter(account => account.type == "income")
+        .filter((account) => account.type == "income")
         .reduce((accumulator, income) => accumulator + income.amount, 0);
 
       this.expensesTotalAmount = this.accounts
-        .filter(account => account.type == "expense")
+        .filter((account) => account.type == "expense")
         .reduce((accumulator, expense) => accumulator + expense.amount, 0);
-    }
+    },
   },
   methods: {
     async actionsEvent(payload) {
       if (payload.action == "reload") {
-        await api.getIncomes().then(incomes => (this.incomes = incomes));
-        await api.getExpenses().then(expenses => (this.expenses = expenses));
+        await api.getIncomes().then((incomes) => (this.incomes = incomes));
+        await api.getExpenses().then((expenses) => (this.expenses = expenses));
         this.accounts = [];
         this.accounts = this.accounts.concat(this.incomes);
         this.accounts = this.accounts.concat(this.expenses);
@@ -166,8 +172,8 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [year, month, day].join("-");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -178,6 +184,7 @@ export default {
   right: 1%;
   background: #38686a;
   color: #bbdef2;
+  border-radius: 15px;
 }
 
 .total-amount {
