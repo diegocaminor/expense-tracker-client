@@ -1,6 +1,6 @@
 <template>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg">
       <a class="navbar-brand" href="#">Expense Tracker!</a>
       <button
         class="navbar-toggler"
@@ -61,3 +61,18 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.navbar {
+  background: #38686a;
+}
+.dropdown-menu {
+  background: #38686a;
+}
+a {
+  color: #bbdef2;
+}
+a:hover {
+  color: #1f8fb1;
+}
+</style>
