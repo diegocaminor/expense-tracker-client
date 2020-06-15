@@ -16,8 +16,16 @@
           class="form-control"
         />
       </div>
-      <font-awesome-icon class="faIcon mt-2 mr-2" icon="save" v-on:click="saveCategory()" />
-      <font-awesome-icon class="faIcon mt-2" icon="times" v-on:click="cancelAddCategory()" />
+      <font-awesome-icon
+        class="faIcon mt-2 mr-2"
+        icon="save"
+        v-on:click="saveCategory()"
+      />
+      <font-awesome-icon
+        class="faIcon mt-2"
+        icon="times"
+        v-on:click="cancelAddCategory()"
+      />
     </div>
   </div>
 </template>
@@ -30,14 +38,14 @@ export default {
 
   data() {
     return {
-      errors: []
+      errors: [],
     };
   },
   props: {
     category: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   methods: {
     async saveCategory() {
@@ -50,15 +58,19 @@ export default {
       }
       if (!this.errors.length) {
         if (!this.category.id) {
-          this.requestMessage = await api.addCategory(this.category);
-          alert(this.requestMessage);
+          this.responseMessage = await api.addCategory(this.category);
+          this.$swal({
+            icon: "success",
+            title: "Successful!",
+            text: this.responseMessage,
+          });
         }
         this.$emit("toggle-get-categories");
       }
     },
     cancelAddCategory() {
       this.$emit("toggle-get-categories");
-    }
-  }
+    },
+  },
 };
 </script>

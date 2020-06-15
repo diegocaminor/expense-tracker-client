@@ -11,8 +11,16 @@
     <td>{{ accountData.amount | dollar }}</td>
     <td>{{ accountData.date | moment }}</td>
     <td>
-      <font-awesome-icon class="faIcon mr-2" icon="edit" v-on:click="editAccount(accountData)" />
-      <font-awesome-icon class="faIcon" icon="trash" v-on:click="deleteAccount(accountData.id)" />
+      <font-awesome-icon
+        class="faIcon mr-2"
+        icon="edit"
+        v-on:click="editAccount(accountData)"
+      />
+      <font-awesome-icon
+        class="faIcon"
+        icon="trash"
+        v-on:click="deleteAccount(accountData.id)"
+      />
     </td>
   </tr>
 </template>
@@ -24,34 +32,39 @@ export default {
   name: "PxAccount",
   data() {
     return {
-      requestMessage: ""
+      responseMessage: "",
     };
   },
   props: {
     accountData: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   methods: {
     async deleteAccount(accountId) {
       if (this.accountData.type == "expense") {
-        this.requestMessage = await api.deleteExpense(accountId);
+        this.responseMessage = await api.deleteExpense(accountId);
       } else if (this.accountData.type == "income") {
-        this.requestMessage = await api.deleteIncome(accountId);
+        this.responseMessage = await api.deleteIncome(accountId);
       }
-      alert(this.requestMessage);
+      this.$swal({
+        icon: "success",
+        title: "Deleted!",
+        text: this.responseMessage,
+      });
+
       this.$emit("actions-event", {
         action: "reload",
-        data: null
+        data: null,
       });
     },
     editAccount(account) {
       this.$emit("actions-event", {
         action: "edit-account",
-        data: account
+        data: account,
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -61,7 +61,11 @@ export default {
         this.$cookies.set("userName", data.user.userName);
         this.$router.go("/");
       } else {
-        alert("Incorrect username or password");
+        this.$swal({
+          icon: "error",
+          title: "Oops...",
+          text: "Incorrect username or password!",
+        });
       }
     },
   },

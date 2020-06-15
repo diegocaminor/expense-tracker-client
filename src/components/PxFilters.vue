@@ -6,28 +6,43 @@
 
     <div class="d-flex">
       <div class="form-group mx-4">
-        <select class="form-control" v-model="filterSelected" @change="queryDate = ''">
+        <select
+          class="form-control"
+          v-model="filterSelected"
+          @change="queryDate = ''"
+        >
           <option disabled selected="selected" value>Select filter</option>
           <option
             v-for="filter in queryFilters"
             :key="filter"
             :value="filter"
-          >{{ filter | capitalizeFirstLetter }}</option>
+            >{{ filter | capitalizeFirstLetter }}</option
+          >
         </select>
       </div>
       <div v-if="filterSelected == 'day'" class="form-group mx-4">
-        <input class="form-control" type="date" id="example-date-input" @change="setQueryDate" />
+        <input
+          class="form-control"
+          type="date"
+          id="example-date-input"
+          @change="setQueryDate"
+        />
       </div>
       <div v-if="filterSelected == 'month'" class="form-group mx-4">
-        <input class="form-control" type="month" id="example-month-input" @change="setQueryDate" />
+        <input
+          class="form-control"
+          type="month"
+          id="example-month-input"
+          @change="setQueryDate"
+        />
       </div>
       <div v-if="filterSelected == 'year'" class="form-group mx-4 dropdown">
         <select class="form-control" @change="setQueryDate">
-          <option disabled selected="selected" value="currentYear">Select year</option>
+          <option disabled selected="selected" value="currentYear"
+            >Select year</option
+          >
           <option v-for="year in years" :key="year" :value="year">
-            {{
-            year
-            }}
+            {{ year }}
           </option>
         </select>
       </div>
@@ -37,7 +52,9 @@
           class="btn btn-primary"
           v-if="filterSelected != ''"
           @click="getAccountsByFilter()"
-        >Search</button>
+        >
+          Search
+        </button>
       </div>
     </div>
   </div>
@@ -56,14 +73,14 @@ export default {
       filterSelected: "",
       queryDate: "",
       queryFilters: ["day", "month", "year", "all"],
-      years: ["2019", "2020", "2021"]
+      years: ["2019", "2020", "2021"],
     };
   },
   props: {
     isPieChart: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     setQueryDate(event) {
@@ -113,11 +130,14 @@ export default {
           }
         } else {
           reloadData = false;
-          alert("Please, select a date");
+          this.$swal({
+            icon: "info",
+            title: "Please, select a date",
+          });
         }
       }
       if (reloadData) this.$emit("search-result", accounts);
-    }
-  }
+    },
+  },
 };
 </script>
