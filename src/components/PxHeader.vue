@@ -1,7 +1,8 @@
 <template>
   <header>
     <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="#">Expense Tracker!</a>
+      <router-link class="navbar-brand" to="/">Expense Tracker!</router-link>
+
       <button
         class="navbar-toggler"
         type="button"
@@ -16,6 +17,12 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <div class="navbar-nav mr-auto"></div>
         <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <router-link :to="{ name: 'home' }" class="nav-link">Home</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'piechart' }" class="nav-link">See Expenses Pie Chart!</router-link>
+          </li>
           <li class="dropdown">
             <a
               href="#"

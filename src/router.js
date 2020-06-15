@@ -5,6 +5,7 @@ import Home from "@/views/Home";
 import PieChart from "@/views/PieChart";
 import Login from "@/views/Login";
 import SignUp from "@/views/SignUp";
+import NotFound from "@/views/NotFound";
 
 Vue.use(Router);
 
@@ -34,6 +35,11 @@ export default new Router({
       path: "/signup",
       name: "signup",
       component: SignUp,
+    },
+    {
+      path: "*",
+      name: "notfound",
+      component: NotFound,
     },
   ],
 });

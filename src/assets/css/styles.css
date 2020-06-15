@@ -14,3 +14,15 @@
 .filters {
   padding-right: 50%;
 }
+
+.btn-primary {
+  background: #38686a;
+}
+
+.btn-primary:hover {
+  background: #1f8fb1;
+}
+
+[v-cloak] {
+  display: none;
+}

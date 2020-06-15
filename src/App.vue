@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-cloak>
     <px-header v-show="token" />
     <router-view />
   </div>
