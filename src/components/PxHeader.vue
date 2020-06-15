@@ -18,10 +18,14 @@
         <div class="navbar-nav mr-auto"></div>
         <ul class="nav navbar-nav">
           <li class="nav-item">
-            <router-link :to="{ name: 'home' }" class="nav-link">Home</router-link>
+            <router-link :to="{ name: 'home' }" class="nav-link"
+              >Home</router-link
+            >
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'piechart' }" class="nav-link">See Expenses Pie Chart!</router-link>
+            <router-link :to="{ name: 'piechart' }" class="nav-link"
+              >See Expenses Pie Chart!</router-link
+            >
           </li>
           <li class="dropdown">
             <a
@@ -48,24 +52,26 @@
 </template>
 
 <script>
-import cookies from "@/assets/scripts/cookies";
-
-const { userName } = cookies;
 export default {
   name: "PxHeader",
   data() {
     return {
-      userName
+      token: "",
+      userName: "",
     };
+  },
+  created() {
+    this.userName = this.$cookies.get("userName");
   },
   methods: {
     logout() {
-      document.cookie = "token=";
-      document.cookie = "id=";
-      document.cookie = "userName=";
-      this.$router.push({ name: "login" });
-    }
-  }
+      this.$cookies.remove("token");
+      this.$cookies.remove("id");
+      this.$cookies.remove("userName");
+      this.userName = "";
+      this.$router.go("/");
+    },
+  },
 };
 </script>
 

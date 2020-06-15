@@ -1,4 +1,5 @@
 import Vue from "vue";
+import VueCookies from "vue-cookies";
 import Router from "vue-router";
 
 import Home from "@/views/Home";
@@ -7,11 +8,8 @@ import Login from "@/views/Login";
 import SignUp from "@/views/SignUp";
 import NotFound from "@/views/NotFound";
 
+Vue.use(VueCookies);
 Vue.use(Router);
-
-import cookies from "@/assets/scripts/cookies";
-
-let { token } = cookies;
 
 export default new Router({
   mode: "history",
@@ -19,12 +17,12 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: token ? Home : Login,
+      component: Vue.$cookies.get("token") ? Home : Login,
     },
     {
       path: "/piechart",
       name: "piechart",
-      component: token ? PieChart : Login,
+      component: Vue.$cookies.get("token") ? PieChart : Login,
     },
     {
       path: "/login",

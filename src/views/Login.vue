@@ -28,8 +28,9 @@
           <input
             type="checkbox"
             v-model="user.rememberMe"
-            @click="user.rememberMe=!user.rememberMe"
-          /> Remember me
+            @click="user.rememberMe = !user.rememberMe"
+          />
+          Remember me
         </label>
         <router-link to="/signup">Don't you have account? Sign-up!</router-link>
       </div>
@@ -47,16 +48,23 @@ export default {
       user: {
         userName: "",
         password: "",
-        rememberMe: false
-      }
+        rememberMe: false,
+      },
     };
   },
   methods: {
     async signIn() {
-      const token = await api.signIn(this.user);
-      if (token) this.$router.push({ name: "home" });
-    }
-  }
+      const data = await api.signIn(this.user);
+      if (data.token) {
+        this.$cookies.set("token", data.token);
+        this.$cookies.set("id", data.user.id);
+        this.$cookies.set("userName", data.user.userName);
+        this.$router.go("/");
+      } else {
+        alert("Incorrect username or password");
+      }
+    },
+  },
 };
 </script>
 

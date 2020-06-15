@@ -36,16 +36,7 @@ const signIn = async (user) => {
     },
   });
   const data = await res.json();
-  console.log(data);
-  if (data.token) {
-    document.cookie = `token=${data.token}`;
-    document.cookie = `id=${data.user.id}`;
-    document.cookie = `userName=${data.user.userName}`;
-  } else {
-    alert("Incorrect username or password");
-  }
-
-  return data.token;
+  return data;
 };
 
 // GET expenses by userID

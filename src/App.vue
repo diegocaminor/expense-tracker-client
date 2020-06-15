@@ -1,26 +1,24 @@
 <template>
   <div id="app" v-cloak>
-    <px-header v-show="token" />
+    <px-header v-if="token" />
     <router-view />
   </div>
 </template>
 
 <script>
 import PxHeader from "@/components/PxHeader";
-import cookies from "@/assets/scripts/cookies";
-const { token } = cookies;
 
 export default {
   name: "App",
   components: {
-    PxHeader
+    PxHeader,
   },
   data() {
     return {
-      token
+      token: this.$cookies.get("token"),
     };
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

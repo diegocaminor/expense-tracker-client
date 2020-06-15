@@ -17,6 +17,7 @@
     "numeral": "^2.0.6",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.5.3",
+    "vue-cookies": "^1.7.0",
     "vue-router": "^3.3.2"
   },
   "devDependencies": {
