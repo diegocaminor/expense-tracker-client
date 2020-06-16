@@ -2,7 +2,17 @@
   <div>
     <div class="container">
       <div class="row pt-5">
-        <px-filters class="filters" v-on:search-result="reloadAccounts" />
+        <bounce-loader
+          :loading="isLoading"
+          class="spinner-loader"
+          color="#38686a"
+          :size="100"
+        />
+        <px-filters
+          v-if="!isLoading"
+          class="filters"
+          v-on:search-result="reloadAccounts"
+        />
         <table class="table" v-if="accounts.length">
           <thead>
             <tr>
@@ -37,7 +47,9 @@
             data-toggle="modal"
             data-target="#accountModal"
             @click="reinitializeModel('expense')"
-          >Add expense -</button>
+          >
+            Add expense -
+          </button>
         </div>
         <div class="col-sm-3">
           <button
@@ -47,7 +59,9 @@
             data-toggle="modal"
             data-target="#accountModal"
             @click="reinitializeModel('income')"
-          >Add income +</button>
+          >
+            Add income +
+          </button>
         </div>
       </div>
     </div>
@@ -91,7 +105,7 @@ export default {
     PxAccount,
     PxAccountModal,
     PxFilters,
-    PxTotalAmount
+    PxTotalAmount,
   },
   data() {
     return {
@@ -104,32 +118,39 @@ export default {
       model: new Model("", id, 0, "", "", this.formattedDate),
       updateModel: false,
       accountType: "",
-      message:
-        "You must learn to save and spend afterwards, let's tracking your accounts!😊"
+      message: "",
+      isLoading: false,
     };
   },
   async created() {
-    await api.getIncomes().then(incomes => (this.incomes = incomes));
-    await api.getExpenses().then(expenses => (this.expenses = expenses));
-    this.accounts = this.accounts.concat(this.incomes);
-    this.accounts = this.accounts.concat(this.expenses);
+    this.isLoading = true;
+    await api.getIncomes().then((incomes) => (this.incomes = incomes));
+    await api.getExpenses().then((expenses) => (this.expenses = expenses));
+    if (this.incomes.length == 0 && this.expenses.length == 0) {
+      this.message =
+        "You must learn to save and spend afterwards, let's tracking your accounts!😊";
+    } else {
+      this.accounts = this.accounts.concat(this.incomes);
+      this.accounts = this.accounts.concat(this.expenses);
+    }
+    this.isLoading = false;
   },
   watch: {
     accounts: function() {
       this.incomesTotalAmount = this.accounts
-        .filter(account => account.type == "income")
+        .filter((account) => account.type == "income")
         .reduce((accumulator, income) => accumulator + income.amount, 0);
 
       this.expensesTotalAmount = this.accounts
-        .filter(account => account.type == "expense")
+        .filter((account) => account.type == "expense")
         .reduce((accumulator, expense) => accumulator + expense.amount, 0);
-    }
+    },
   },
   methods: {
     async actionsEvent(payload) {
       if (payload.action == "reload") {
-        await api.getIncomes().then(incomes => (this.incomes = incomes));
-        await api.getExpenses().then(expenses => (this.expenses = expenses));
+        await api.getIncomes().then((incomes) => (this.incomes = incomes));
+        await api.getExpenses().then((expenses) => (this.expenses = expenses));
         this.accounts = [];
         this.accounts = this.accounts.concat(this.incomes);
         this.accounts = this.accounts.concat(this.expenses);
@@ -148,9 +169,11 @@ export default {
       }
     },
     reloadAccounts(queriedExpenses) {
+      this.isLoading = true;
       this.accounts = queriedExpenses || [];
       if (this.accounts.length == 0)
         this.message = "No data available for this date😞";
+      this.isLoading = false;
     },
     reinitializeModel(accountType) {
       this.accountType = accountType;
@@ -168,7 +191,7 @@ export default {
       if (day.length < 2) day = "0" + day;
 
       return [year, month, day].join("-");
-    }
-  }
+    },
+  },
 };
 </script>

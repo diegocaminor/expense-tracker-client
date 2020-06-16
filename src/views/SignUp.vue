@@ -52,7 +52,9 @@
         <button type="submit" class="btn btn-primary btn-block">Sign up</button>
       </div>
       <div class="clearfix">
-        <router-link to="/login">Already have account? Login!</router-link>
+        <router-link to="/login" class="call-to-action"
+          >Already have account? <b>Login!</b></router-link
+        >
       </div>
     </form>
   </div>
@@ -70,8 +72,8 @@ export default {
         lastName: "",
         userName: "",
         email: "",
-        password: ""
-      }
+        password: "",
+      },
     };
   },
   methods: {
@@ -79,8 +81,8 @@ export default {
       const responseMessage = await api.signUp(this.user);
       alert(responseMessage);
       this.$router.push({ name: "login" });
-    }
-  }
+    },
+  },
 };
 </script>
 

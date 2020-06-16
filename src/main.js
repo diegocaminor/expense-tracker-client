@@ -4,6 +4,7 @@ import "@/assets/css/styles.css";
 import router from "@/router";
 import VueSweetalert2 from "vue-sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
+import { VueSpinners } from "@saeris/vue-spinners";
 
 import { dollarFilter } from "@/filters";
 import { momentFilter } from "@/filters";
@@ -34,6 +35,7 @@ const options = {
   cancelButtonColor: "#ff7674",
 };
 Vue.use(VueSweetalert2, options);
+Vue.use(VueSpinners);
 
 Vue.config.productionTip = false;
 

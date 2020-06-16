@@ -1,9 +1,25 @@
 <template>
   <div class="container">
     <div class="row pt-5">
-      <px-filters class="filters" :isPieChart="isPieChart" v-on:search-result="reloadAccounts" />
+      <bounce-loader
+        :loading="isLoading"
+        class="spinner-loader"
+        color="#38686a"
+        :size="100"
+      />
+      <px-filters
+        v-if="!isLoading"
+        class="filters"
+        :isPieChart="isPieChart"
+        v-on:search-result="reloadAccounts"
+      />
       <div id="chart" v-if="series.length">
-        <apexchart type="pie" width="380" :options="chartOptions" :series="series"></apexchart>
+        <apexchart
+          type="pie"
+          width="380"
+          :options="chartOptions"
+          :series="series"
+        ></apexchart>
       </div>
       <div v-else class="row pt-5 pb-5 col-sm-4 offset-sm-4">
         <h2>{{ message }}</h2>
@@ -25,20 +41,21 @@ export default {
   name: "PieChart",
   components: {
     PxFilters,
-    PxTotalAmount
+    PxTotalAmount,
   },
   data() {
     return {
-      message: "No data available for this date😞",
+      message: "",
       incomesTotalAmount: 0,
       expensesTotalAmount: 0,
       accounts: [],
       isPieChart: true,
       series: [],
+      isLoading: false,
       chartOptions: {
         chart: {
           width: 380,
-          type: "pie"
+          type: "pie",
         },
         labels: [],
         responsive: [
@@ -46,22 +63,28 @@ export default {
             breakpoint: 480,
             options: {
               chart: {
-                width: 200
+                width: 200,
               },
               legend: {
-                position: "bottom"
-              }
-            }
-          }
-        ]
-      }
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      },
     };
   },
   async created() {
+    this.isLoading = true;
     this.accounts = await api
       .getExpenses(undefined, undefined, true)
-      .then(expenses => (this.expenses = expenses));
-    this.reloadAccounts(this.accounts);
+      .then((expenses) => (this.expenses = expenses));
+    if (this.accounts == 0) {
+      this.message = "No data available for this date😞";
+    } else {
+      this.reloadAccounts(this.accounts);
+    }
+    this.isLoading = false;
   },
   watch: {
     accounts: function() {
@@ -72,7 +95,7 @@ export default {
         (accumulator, expense) => accumulator + expense.totalAmount,
         0
       );
-    }
+    },
   },
   methods: {
     reloadAccounts(queriedExpenses) {
@@ -81,13 +104,13 @@ export default {
         this.series = [];
         this.message = "No data available for this date😞";
       } else {
-        this.series = queriedExpenses.map(expense => expense.totalAmount);
+        this.series = queriedExpenses.map((expense) => expense.totalAmount);
         this.chartOptions = {
-          labels: queriedExpenses.map(expense => expense._id)
+          labels: queriedExpenses.map((expense) => expense._id),
         };
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

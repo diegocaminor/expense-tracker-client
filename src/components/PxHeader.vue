@@ -4,7 +4,7 @@
       <router-link class="navbar-brand" to="/">Expense Tracker!</router-link>
 
       <button
-        class="navbar-toggler"
+        class="navbar-toggler navbar-light"
         type="button"
         data-toggle="collapse"
         data-target="#navbarSupportedContent"
@@ -33,16 +33,15 @@
               class="nav-link dropdown-toggle"
               id="navbarDropdown"
               data-toggle="dropdown"
-              aria-expanded="false"
             >
               Welcome, {{ userName }}
               <b class="caret"></b>
             </a>
             <div
-              class="dropdown-menu dropdown-menu-right position-absolute"
+              class="dropdown-menu dropdown-menu-right "
               aria-labelledby="navbarDropdown"
             >
-              <a class="dropdown-item" @click="logout">Logout</a>
+              <a class="dropdown-item text-center" @click="logout">Logout</a>
             </div>
           </li>
         </ul>

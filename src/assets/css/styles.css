@@ -4,7 +4,24 @@
 
 .login-form {
   width: 340px;
-  margin: 50px auto;
+  margin: 100px auto;
+  padding: 50px;
+  color: white;
+  border-radius: 20px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(#38686a, #1f8fb1);
+}
+
+.call-to-action {
+  color: white;
+  font-size: 0.9em;
+}
+.call-to-action:hover {
+  color: white;
+}
+
+.spinner-loader {
+  margin-left: 45%;
 }
 
 .dropdown-item {

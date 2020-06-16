@@ -24,7 +24,7 @@
         <button type="submit" class="btn btn-primary btn-block">Log in</button>
       </div>
       <div class="clearfix">
-        <label class="pull-left checkbox-inline">
+        <label class="pull-left checkbox-inline mx-3">
           <input
             type="checkbox"
             v-model="user.rememberMe"
@@ -32,7 +32,9 @@
           />
           Remember me
         </label>
-        <router-link to="/signup">Don't you have account? Sign-up!</router-link>
+        <router-link to="/signup" class="call-to-action"
+          >Don't you have account? <b>Sign-up!</b>
+        </router-link>
       </div>
     </form>
   </div>
@@ -72,4 +74,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.checkbox-inline {
+  font-size: 0.8em;
+}
+</style>
