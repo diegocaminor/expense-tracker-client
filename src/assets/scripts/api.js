@@ -1,11 +1,13 @@
 import cookies from "@/assets/scripts/cookies";
 const { token } = cookies;
+const { id } = cookies;
 const apiUrl = "https://api-server-expense-tracker.herokuapp.com/api";
 
 const options = {
   withCredentials: true,
   credentials: "include",
   headers: {
+    id: id,
     Authorization: `Bearer ${token}`,
     "X-FP-API-KEY": "iphone",
     "Content-Type": "application/json",
