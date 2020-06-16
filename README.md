@@ -13,8 +13,8 @@ Single page applicationthat works to keep track of your expenses using microserv
 ![](resources/mockup.png)
 ![](resources/db-model.png)
 ![](resources/login.png)
-![](resources/home.png)
-![](resources/add-expense.png)
+![](resources/home.PNG)
+![](resources/add-expense.PNG)
 ![](resources/piechart.png)
 
 
