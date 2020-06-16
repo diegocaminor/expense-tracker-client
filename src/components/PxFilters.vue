@@ -62,8 +62,6 @@
 
 <script>
 import api from "@/assets/scripts/api.js";
-// import cookies from "@/assets/scripts/cookies";
-// const { id } = cookies;
 
 export default {
   name: "PxFilters",
@@ -73,7 +71,7 @@ export default {
       filterSelected: "",
       queryDate: "",
       queryFilters: ["day", "month", "year", "all"],
-      years: ["2019", "2020", "2021"],
+      years: ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
     };
   },
   props: {
