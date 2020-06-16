@@ -12,7 +12,7 @@ const momentFilter = function(value) {
   if (!value) {
     return " Jan 1, 2020";
   }
-  return moment(value).format("ll");
+  return moment.utc(value).format("ll");
 };
 
 const capitalizeFirstLetterFilter = function(string) {
