@@ -1,6 +1,6 @@
 import cookies from "@/assets/scripts/cookies";
 const { token } = cookies;
-const apiUrl = "http://localhost:3000/api";
+const apiUrl = "https://expense-tracker-api.vercel.app/api";
 
 const options = {
   withCredentials: true,
