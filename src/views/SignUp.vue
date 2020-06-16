@@ -79,8 +79,20 @@ export default {
   methods: {
     async signUp() {
       const responseMessage = await api.signUp(this.user);
-      alert(responseMessage);
-      this.$router.push({ name: "login" });
+      if (responseMessage != undefined) {
+        this.$swal({
+          icon: "success",
+          title: "Successful",
+          text: responseMessage,
+        });
+        this.$router.push({ name: "login" });
+      } else {
+        this.$swal({
+          icon: "error",
+          title: "Oops...",
+          text: "Username is taken",
+        });
+      }
     },
   },
 };

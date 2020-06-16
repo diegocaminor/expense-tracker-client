@@ -217,6 +217,9 @@ export default {
       if (!this.accountData.amount || this.accountData.amount == 0) {
         this.errors.push("Amount required");
       }
+      if (this.accountData.amount <= 0) {
+        this.errors.push("Amount must be positive");
+      }
       if (!this.accountData.category) {
         this.errors.push("Category required");
       }

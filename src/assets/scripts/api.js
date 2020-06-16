@@ -39,7 +39,11 @@ const signIn = async (user) => {
   return data;
 };
 
-// GET expenses by userID
+// Begin expenses methods
+// .
+// .
+// .
+// GET expenses
 const getExpenses = async (queryFilter, queryDate, isPieChart) => {
   const res = await fetch(
     `${apiUrl}/expenses/${queryFilter}/${queryDate}?isPieChart=${isPieChart}`,
@@ -66,7 +70,46 @@ const getExpenses = async (queryFilter, queryDate, isPieChart) => {
   return expenses;
 };
 
-// GET incomes by userID
+// POST create expense
+const addExpense = async (expense) => {
+  const res = await fetch(`${apiUrl}/expenses`, {
+    method: "POST",
+    body: JSON.stringify(expense),
+    ...options,
+  });
+  const data = await res.json();
+  console.log(data);
+  return data.message;
+};
+
+// UPDATE expense
+const updateExpense = async (expense) => {
+  const res = await fetch(`${apiUrl}/expenses/${expense.id}`, {
+    method: "PUT",
+    body: JSON.stringify(expense),
+    ...options,
+  });
+  const data = await res.json();
+  return data.message;
+};
+
+// DELETE expense
+const deleteExpense = async (expenseId) => {
+  const res = await fetch(`${apiUrl}/expenses/${expenseId}`, {
+    method: "DELETE",
+    ...options,
+  });
+  const data = await res.json();
+  return data.message;
+};
+
+// End expenses methods
+
+// Begin incomes methods
+// .
+// .
+// .
+// GET incomes
 const getIncomes = async (queryFilter, queryDate) => {
   const res = await fetch(`${apiUrl}/incomes/${queryFilter}/${queryDate}`, {
     method: "GET",
@@ -87,39 +130,6 @@ const getIncomes = async (queryFilter, queryDate) => {
     date: result.createdAt,
   }));
   return incomes;
-};
-
-// POST create expense
-const addExpense = async (expense) => {
-  const res = await fetch(`${apiUrl}/expenses`, {
-    method: "POST",
-    body: JSON.stringify(expense),
-    ...options,
-  });
-  const data = await res.json();
-  console.log(data);
-  return data.message;
-};
-
-// PUT update expense
-const updateExpense = async (expense) => {
-  const res = await fetch(`${apiUrl}/expenses/${expense.id}`, {
-    method: "PUT",
-    body: JSON.stringify(expense),
-    ...options,
-  });
-  const data = await res.json();
-  return data.message;
-};
-
-// DELETE delete expense by id
-const deleteExpense = async (expenseId) => {
-  const res = await fetch(`${apiUrl}/expenses/${expenseId}`, {
-    method: "DELETE",
-    ...options,
-  });
-  const data = await res.json();
-  return data.message;
 };
 
 // POST create income
@@ -154,6 +164,12 @@ const deleteIncome = async (incomeId) => {
   return data.message;
 };
 
+// End incomes methods
+
+// Begin categories methods
+// .
+// .
+// .
 // GET categories
 const getCategories = async (type) => {
   const res = await fetch(`${apiUrl}/categories/${type}`, {
@@ -178,6 +194,8 @@ const addCategory = async (category) => {
   const data = await res.json();
   return data.message;
 };
+
+// End categories methods
 
 export default {
   signUp,
