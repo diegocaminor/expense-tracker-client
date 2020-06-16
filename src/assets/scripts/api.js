@@ -1,6 +1,6 @@
 import cookies from "@/assets/scripts/cookies";
 const { token } = cookies;
-const apiUrl = "https://expense-tracker-api.vercel.app/api";
+const apiUrl = "https://api-server-expense-tracker.herokuapp.com/api";
 
 const options = {
   withCredentials: true,
