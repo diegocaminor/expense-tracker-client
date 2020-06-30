@@ -32,8 +32,9 @@
           />
           Remember me
         </label>
-        <router-link to="/signup" class="call-to-action"
-          >Don't you have account? <b>Sign-up!</b>
+        <router-link to="/signup" class="call-to-action">
+          Don't you have account?
+          <b>Sign-up!</b>
         </router-link>
       </div>
     </form>
@@ -50,8 +51,8 @@ export default {
       user: {
         userName: "",
         password: "",
-        rememberMe: false,
-      },
+        rememberMe: false
+      }
     };
   },
   methods: {
@@ -61,16 +62,17 @@ export default {
         this.$cookies.set("token", data.token);
         this.$cookies.set("id", data.user.id);
         this.$cookies.set("userName", data.user.userName);
+        // this.$router.push("/");
         this.$router.go("/");
       } else {
         this.$swal({
           icon: "error",
           title: "Oops...",
-          text: "Incorrect username or password!",
+          text: "Incorrect username or password!"
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

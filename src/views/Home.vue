@@ -136,6 +136,7 @@ export default {
     this.isLoading = false;
   },
   watch: {
+    // accounts(newValue, oldValue) { -- también se puede setear el watcher de esta manera
     accounts: function() {
       this.incomesTotalAmount = this.accounts
         .filter((account) => account.type == "income")
