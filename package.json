@@ -14,7 +14,7 @@
     "@saeris/vue-spinners": "^1.0.8",
     "apexcharts": "^3.19.2",
     "core-js": "^3.6.5",
-    "moment": "^2.26.0",
+    "moment": "^2.29.2",
     "numeral": "^2.0.6",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.5.3",
